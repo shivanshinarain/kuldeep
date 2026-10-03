@@ -202,17 +202,41 @@ export default function App() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = (e) => {
     e.preventDefault();
-    try {
-      await fetch('/api/enquiries', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-    } catch (err) {
-      console.log("Enquiry logged locally", err);
+
+    const name = (formData.name || '').trim();
+    const phone = (formData.phone || '').trim();
+    const interest = formData.interest || 'Guitar';
+    const level = formData.level || 'Beginner';
+    const message = (formData.message || '').trim();
+
+    // Required-field validation
+    if (!name || !phone || !interest) {
+      return;
     }
+
+    const whatsappMessage = `Hello Kuldeep Gaur,
+
+I have an enquiry regarding music lessons/admission at Gaur Institute of Performing Art (GIPA).
+
+Name: ${name}
+Phone Number: ${phone}
+Instrument / Interest: ${interest}
+Experience Level: ${level}
+Message / Goals: ${message || 'N/A'}
+
+I would like to know more about the lessons and admission process.
+
+Thank you.`;
+
+    const whatsappUrl = `https://wa.me/917985257106?text=${encodeURIComponent(whatsappMessage)}`;
+
+    const newWindow = window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+      window.location.href = whatsappUrl;
+    }
+
     setFormSubmitted(true);
   };
 
@@ -1107,6 +1131,19 @@ export default function App() {
         </div>
       </footer>
 
+      {/* Floating WhatsApp Action Button */}
+      <a
+        href={`https://wa.me/917985257106?text=${encodeURIComponent(
+          "Hello Kuldeep Gaur, I am interested in learning music/instruments through Gaur Institute of Performing Art (GIPA). I would like to know more about the lessons and admission process."
+        )}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat with Kuldeep Gaur on WhatsApp"
+        className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 hover:shadow-[0_10px_25px_-5px_rgba(37,211,102,0.5)] cursor-pointer"
+      >
+        <WhatsAppIcon size={30} />
+      </a>
+
     </div>
   );
 }
@@ -1115,6 +1152,21 @@ function CheckIcon({ style }) {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={style}>
       <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+  );
+}
+
+function WhatsAppIcon({ size = 30, className = "" }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M17.472 14.382c-.301-.15-1.782-.879-2.058-.979-.276-.1-.476-.15-.677.15-.201.3-.777.979-.953 1.179-.176.2-.351.226-.652.075-.301-.15-1.272-.469-2.423-1.496-.896-.799-1.501-1.787-1.677-2.088-.176-.301-.019-.464.132-.614.136-.135.301-.351.452-.527.15-.176.201-.301.301-.501.101-.201.05-.376-.025-.526-.075-.15-.677-1.631-.928-2.234-.244-.588-.493-.508-.677-.518-.175-.008-.376-.01-.577-.01-.201 0-.527.075-.803.376s-1.054 1.03-1.054 2.512c0 1.482 1.079 2.912 1.23 3.113.15.201 2.124 3.244 5.145 4.549.719.31 1.28.496 1.718.636.722.23 1.379.197 1.898.12.578-.086 1.782-.728 2.033-1.431.251-.703.251-1.305.176-1.431-.075-.126-.276-.201-.577-.351zM12.006 2C6.488 2 2 6.488 2 12.006c0 1.91.536 3.696 1.464 5.225L2 22l4.908-1.428a9.96 9.96 0 0 0 5.098 1.44c5.518 0 10.006-4.488 10.006-10.006C22.012 6.488 17.524 2 12.006 2zm0 18.314c-1.636 0-3.153-.473-4.444-1.289l-.319-.199-2.923.85.87-2.846-.208-.332A8.272 8.272 0 0 1 3.73 12.006c0-4.563 3.713-8.276 8.276-8.276s8.276 3.713 8.276 8.276-3.713 8.308-8.276 8.308z" />
     </svg>
   );
 }
