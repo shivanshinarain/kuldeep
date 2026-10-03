@@ -4,12 +4,9 @@ import { X, Calendar, Clock, CheckCircle, User, Mail, Phone, Sparkles, Music, Sh
 export default function BookingModal({
   isOpen,
   onClose,
-  teachers = [],
-  preselectedTeacherId = 1,
-  preselectedCourse = '',
+  preselectedCourse = 'Guitar',
   onBookingSuccess
 }) {
-  const [selectedTeacherId, setSelectedTeacherId] = useState(preselectedTeacherId || 1);
   const [selectedCourse, setSelectedCourse] = useState(preselectedCourse || 'Guitar');
   const [studentName, setStudentName] = useState('');
   const [studentEmail, setStudentEmail] = useState('');
@@ -27,18 +24,10 @@ export default function BookingModal({
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (preselectedTeacherId) setSelectedTeacherId(preselectedTeacherId);
     if (preselectedCourse) setSelectedCourse(preselectedCourse);
-  }, [preselectedTeacherId, preselectedCourse]);
+  }, [preselectedCourse]);
 
   if (!isOpen) return null;
-
-  const currentTeacher = teachers.find(t => t.id === Number(selectedTeacherId)) || teachers[0] || {
-    id: 1,
-    name: "Director Kuldeep Gaur",
-    instrument: "Guitar & Piano",
-    rate: "Free Trial / Consultation"
-  };
 
   const availableSlots = [
     '10:30 AM', '12:00 PM', '03:00 PM', '04:30 PM', '06:00 PM', '07:30 PM'
@@ -51,11 +40,11 @@ export default function BookingModal({
     'Violin',
     'Tabla',
     'Harmonium',
-    'Classical Vocal (Prayag Syllabus)',
-    'Western Singing & Pop',
+    'Classical Vocal',
+    'Western Singing',
     'Vocal Music & Stagecraft',
     'Classical Kathak Dance',
-    'Western & Bollywood Dance',
+    'Western & Indian Style Dance',
     'Bhangra & Folk Dance',
     'Belly Dance'
   ];
@@ -69,7 +58,7 @@ export default function BookingModal({
       return;
     }
     if (!studentPhone.trim() || studentPhone.trim().length < 10) {
-      setError('Please provide a valid 10-digit phone number so Director Kuldeep Gaur can reach you.');
+      setError('Please provide a valid 10-digit phone number so Kuldeep Gaur can contact you.');
       return;
     }
 
@@ -83,24 +72,23 @@ export default function BookingModal({
           studentName: studentName.trim(),
           studentEmail: studentEmail.trim() || `${studentName.toLowerCase().replace(/\s+/g, '')}@student.gipa.in`,
           studentPhone: studentPhone.trim(),
-          teacherId: Number(selectedTeacherId),
           courseTitle: selectedCourse,
           date,
           timeSlot,
-          lessonTopic: notes.trim() || `${selectedCourse} (${skillLevel} Level) - Trial & Admissions`
+          lessonTopic: notes.trim() || `${selectedCourse} (${skillLevel} Level) - 1-on-1 with Kuldeep Gaur`
         })
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to submit admission booking.');
+        throw new Error(data.error || 'Failed to submit booking.');
       }
 
       setConfirmation(data.booking || {
         id: 'GIPA-' + Math.floor(1000 + Math.random() * 9000),
         studentName,
-        teacherName: currentTeacher.name,
+        teacherName: "Kuldeep Gaur",
         instrument: selectedCourse,
         date,
         timeSlot
@@ -111,14 +99,13 @@ export default function BookingModal({
       }
     } catch (err) {
       console.error(err);
-      // Fallback local booking
       const fallbackBooking = {
         id: 'GIPA-' + Math.floor(1000 + Math.random() * 9000),
         studentName,
         studentEmail: studentEmail || "student@gipa.in",
         studentPhone: studentPhone || "7985257106",
-        teacherId: Number(selectedTeacherId),
-        teacherName: currentTeacher.name,
+        teacherId: 1,
+        teacherName: "Kuldeep Gaur",
         instrument: selectedCourse,
         date,
         timeSlot,
@@ -134,7 +121,7 @@ export default function BookingModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-xl bg-[#14161d] border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl max-h-[92vh] overflow-y-auto text-white">
+      <div className="relative w-full max-w-lg bg-[#14161d] border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl max-h-[92vh] overflow-y-auto text-white">
         <button
           onClick={onClose}
           className="absolute top-5 right-5 text-gray-400 hover:text-white p-2 rounded-xl bg-white/5 hover:bg-white/10 transition"
@@ -151,24 +138,24 @@ export default function BookingModal({
 
             <div className="space-y-2">
               <span className="text-[11px] font-mono uppercase tracking-widest text-[#FFF00F] bg-[#FFF00F]/10 px-3 py-1 rounded-full border border-[#FFF00F]/30">
-                Admission Slot Confirmed • Ref: {confirmation.id}
+                Direct Session Confirmed • Ref: {confirmation.id}
               </span>
               <h2 className="text-2xl sm:text-3xl font-black uppercase text-white">
-                Welcome to GIPA Lakhimpur!
+                You're Scheduled with Kuldeep Gaur!
               </h2>
               <p className="text-gray-300 text-sm max-w-md mx-auto">
-                Your trial session and consultation under <strong className="text-[#FFF00F]">Director Kuldeep Gaur</strong> has been reserved for <strong className="text-white">{confirmation.studentName}</strong>.
+                Your direct 1-on-1 session has been reserved for <strong className="text-white">{confirmation.studentName}</strong>.
               </p>
             </div>
 
             <div className="bg-[#101116] border border-white/10 rounded-2xl p-5 text-left space-y-3 text-sm">
               <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                <span className="text-gray-400">Program / Course:</span>
+                <span className="text-gray-400">Program:</span>
                 <span className="font-bold text-[#FF007F]">{confirmation.instrument}</span>
               </div>
               <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                <span className="text-gray-400">Guiding Mentor:</span>
-                <span className="font-bold text-[#FFF00F]">{confirmation.teacherName}</span>
+                <span className="text-gray-400">Master Instructor:</span>
+                <span className="font-bold text-[#FFF00F]">Kuldeep Gaur (Direct)</span>
               </div>
               <div className="flex justify-between items-center border-b border-white/5 pb-2">
                 <span className="text-gray-400">Scheduled Date & Time:</span>
@@ -191,13 +178,13 @@ export default function BookingModal({
                 className="flex-1 bg-[#FF007F] hover:bg-[#D8125B] text-white font-bold py-3.5 px-6 rounded-xl transition flex items-center justify-center space-x-2 shadow-[0_0_20px_rgba(255,0,127,0.4)]"
               >
                 <Phone size={16} />
-                <span>Call Director (7985257106)</span>
+                <span>Call Kuldeep Gaur (7985257106)</span>
               </a>
               <button
                 onClick={onClose}
                 className="bg-white/10 hover:bg-white/20 text-white font-bold py-3.5 px-6 rounded-xl transition"
               >
-                Done
+                Close
               </button>
             </div>
           </div>
@@ -206,13 +193,13 @@ export default function BookingModal({
             <div className="space-y-1">
               <div className="flex items-center space-x-2 text-[#FFF00F] text-xs font-bold uppercase tracking-wider">
                 <Sparkles size={16} className="text-[#FF007F]" />
-                <span>Direct Guidance of Kuldeep Gaur</span>
+                <span>Direct Training Under Kuldeep Gaur</span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-black uppercase text-white tracking-tight">
-                Book Trial & Consultation
+                Book 1-on-1 Trial Session
               </h2>
               <p className="text-gray-400 text-xs sm:text-sm">
-                Join Lakhimpur Kheri's premier institute for Music, Vocals, and Dance. ABRSM & Prayag certified curricula.
+                Receive personalized attention directly from Kuldeep Gaur at GIPA Lakhimpur.
               </p>
             </div>
 
@@ -226,7 +213,7 @@ export default function BookingModal({
               {/* Program / Discipline Select */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1.5">
-                  Interested Discipline / Course
+                  Select Program / Instrument
                 </label>
                 <select
                   value={selectedCourse}
@@ -239,38 +226,14 @@ export default function BookingModal({
                 </select>
               </div>
 
-              {/* Mentor Select */}
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1.5">
-                  Select Faculty / Mentor
-                </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-40 overflow-y-auto pr-1">
-                  {teachers.map(teacher => {
-                    const isSelected = Number(selectedTeacherId) === teacher.id;
-                    return (
-                      <div
-                        key={teacher.id}
-                        onClick={() => setSelectedTeacherId(teacher.id)}
-                        className={`p-2.5 rounded-xl border cursor-pointer transition flex items-center space-x-2.5 ${
-                          isSelected
-                            ? 'bg-[#FF007F]/20 border-[#FF007F] shadow-[0_0_15px_rgba(255,0,127,0.3)]'
-                            : 'bg-[#101116] border-white/10 hover:border-white/20'
-                        }`}
-                      >
-                        <img
-                          src={teacher.image}
-                          alt={teacher.name}
-                          className="w-9 h-9 rounded-lg object-cover flex-shrink-0"
-                        />
-                        <div className="overflow-hidden">
-                          <p className={`text-xs font-bold truncate ${isSelected ? 'text-[#FFF00F]' : 'text-white'}`}>
-                            {teacher.name}
-                          </p>
-                          <p className="text-[10px] text-gray-400 truncate">{teacher.instrument}</p>
-                        </div>
-                      </div>
-                    );
-                  })}
+              {/* Master Trainer Info Callout */}
+              <div className="bg-[#101116] border border-[#FFF00F]/30 p-3.5 rounded-2xl flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-xl bg-[#FFF00F] text-[#121212] font-black text-sm flex items-center justify-center flex-shrink-0 shadow-[0_0_10px_rgba(255,240,15,0.4)]">
+                  KG
+                </div>
+                <div>
+                  <h4 className="text-sm font-extrabold text-white">Direct Guidance: Kuldeep Gaur</h4>
+                  <p className="text-[11px] text-gray-400">Sole Master Trainer & Founder • ABRSM & Prayag Sangeet Aligned</p>
                 </div>
               </div>
 
@@ -278,14 +241,14 @@ export default function BookingModal({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1.5">
-                    Student Full Name *
+                    Your Name *
                   </label>
                   <div className="relative">
                     <User size={16} className="absolute left-3.5 top-3 text-gray-500" />
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Rahul Sharma"
+                      placeholder="e.g. Aman Verma"
                       value={studentName}
                       onChange={(e) => setStudentName(e.target.value)}
                       className="w-full bg-[#101116] border border-white/15 focus:border-[#FFF00F] rounded-xl py-2.5 pl-10 pr-3 text-sm text-white placeholder-gray-600 outline-none transition"
@@ -295,7 +258,7 @@ export default function BookingModal({
 
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1.5">
-                    Phone / WhatsApp Number *
+                    Phone / WhatsApp *
                   </label>
                   <div className="relative">
                     <Phone size={16} className="absolute left-3.5 top-3 text-gray-500" />
@@ -351,7 +314,7 @@ export default function BookingModal({
                   Current Level
                 </label>
                 <div className="grid grid-cols-3 gap-2">
-                  {['Beginner', 'Intermediate', 'Advanced / Graded'].map(lvl => (
+                  {['Beginner', 'Intermediate', 'Advanced'].map(lvl => (
                     <button
                       key={lvl}
                       type="button"
@@ -372,8 +335,8 @@ export default function BookingModal({
             {/* Modal Actions */}
             <div className="pt-2 border-t border-white/10 flex items-center justify-between">
               <div className="text-xs text-gray-400">
-                <span>Direct Guidance: </span>
-                <strong className="text-white">Director Kuldeep Gaur</strong>
+                <span>Direct Contact: </span>
+                <strong className="text-white">7985257106</strong>
               </div>
 
               <div className="flex space-x-3">
@@ -390,11 +353,11 @@ export default function BookingModal({
                   className="bg-[#FF007F] hover:bg-[#D8125B] disabled:opacity-50 text-white font-bold px-6 py-2.5 rounded-xl transition shadow-[0_0_20px_rgba(255,0,127,0.4)] text-xs uppercase tracking-wider flex items-center space-x-2"
                 >
                   {isSubmitting ? (
-                    <span>Submitting...</span>
+                    <span>Booking...</span>
                   ) : (
                     <>
                       <ShieldCheck size={16} />
-                      <span>Confirm Slot</span>
+                      <span>Confirm Session</span>
                     </>
                   )}
                 </button>
