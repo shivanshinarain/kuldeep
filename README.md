@@ -68,3 +68,4 @@ This runs:
 | `GET` | `/api/bookings` | Fetch all student masterclass bookings |
 | `POST` | `/api/bookings` | Create new masterclass reservation |
 | `DELETE` | `/api/bookings/:id` | Cancel an existing booking |
+# kuldeepgaur
