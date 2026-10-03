@@ -15,9 +15,9 @@ import {
   Phone, 
   Mail, 
   ChevronRight, 
-  Star, 
-  Sparkles, 
-  ExternalLink 
+  Star,
+  Sparkles,
+  ExternalLink
 } from 'lucide-react';
 
 // ==========================================
@@ -49,7 +49,8 @@ const lessonsData = [
     description: "Understand keyboard harmony, voice leading, classical interpretation, and contemporary chord progressions under direct mentorship.",
     accent: "#E6B83A",
     bgColor: "#14130F",
-    image: "https://images.unsplash.com/photo-1520523839896-5742257ca122?auto=format&fit=crop&w=1200&q=80",
+    // Premium, dramatic, high-end editorial grand piano photograph
+    image: "https://images.unsplash.com/photo-1520523839896-5742257ca122?auto=format&fit=crop&w=1400&q=85",
     details: [
       "Touch, Dynamics & Articulation",
       "Standard Notation & Lead Sheets",
