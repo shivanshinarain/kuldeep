@@ -137,7 +137,7 @@ const faqsData = [
   { q: "What instruments and disciplines can I learn?", a: "Guitar, Piano, Drums, Violin, Tabla, Harmonium, Classical & Western Vocals, and Dance (Kathak, Folk, Bhangra)." },
   { q: "Are complete beginners welcome?", a: "Yes. Beginners receive patient, step-by-step foundation training designed to build unshakeable technique." },
   { q: "Where is the institute located?", a: "Punjabi Colony, Nehar Road, Rajgarh, Lakhimpur Kheri - 262701 (Near Guru Nanak Inter College / Guru Nanak Degree College)." },
-  { q: "How are lesson times and schedules booked?", a: "You can book trial slots or regular weekly schedules directly by calling Kuldeep Gaur at 7985257106." }
+  { q: "How are lesson times and schedules booked?", a: "You can book trial slots or regular weekly schedules directly by calling Kuldeep Gaur at +91 7985257106." }
 ];
 
 const pianoNotes = [
@@ -325,7 +325,7 @@ Thank you.`;
 
           <div className="border-t border-[#F4F0E8]/20 pt-6 flex flex-col space-y-2 text-xs font-mono text-[#F4F0E8]/60">
             <span>Gaur Institute of Performing Art (GIPA)</span>
-            <span>Lakhimpur Kheri • 7985257106</span>
+            <span>Lakhimpur Kheri • +91 7985257106</span>
           </div>
         </div>
       )}
@@ -803,7 +803,7 @@ Thank you.`;
               <a href="#contact" className="bg-[#E6B83A] text-[#111111] px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-[#F4F0E8] transition">
                 Book a Session with Kuldeep
               </a>
-              <span className="text-xs font-mono text-[#F4F0E8]/60">Call: 7985257106</span>
+              <span className="text-xs font-mono text-[#F4F0E8]/60">Call: +91 7985257106</span>
             </div>
           </div>
 
@@ -973,7 +973,7 @@ Thank you.`;
                 <Phone className="text-[#9E2F2F] shrink-0" size={20} />
                 <div>
                   <strong className="block font-bold uppercase">Direct Phone:</strong>
-                  <a href="tel:7985257106" className="text-[#111111]/80 hover:text-[#9E2F2F] font-bold">7985257106</a>
+                  <a href="tel:+917985257106" className="text-[#111111]/80 hover:text-[#9E2F2F] font-bold">+91 7985257106</a>
                 </div>
               </div>
 

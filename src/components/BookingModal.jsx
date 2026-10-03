@@ -103,7 +103,7 @@ export default function BookingModal({
         id: 'GIPA-' + Math.floor(1000 + Math.random() * 9000),
         studentName,
         studentEmail: studentEmail || "student@gipa.in",
-        studentPhone: studentPhone || "7985257106",
+        studentPhone: studentPhone || "+91 7985257106",
         teacherId: 1,
         teacherName: "Kuldeep Gaur",
         instrument: selectedCourse,
@@ -174,11 +174,11 @@ export default function BookingModal({
 
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <a
-                href="tel:7985257106"
+                href="tel:+917985257106"
                 className="flex-1 bg-[#FF007F] hover:bg-[#D8125B] text-white font-bold py-3.5 px-6 rounded-xl transition flex items-center justify-center space-x-2 shadow-[0_0_20px_rgba(255,0,127,0.4)]"
               >
                 <Phone size={16} />
-                <span>Call Kuldeep Gaur (7985257106)</span>
+                <span>Call Kuldeep Gaur (+91 7985257106)</span>
               </a>
               <button
                 onClick={onClose}
@@ -265,7 +265,7 @@ export default function BookingModal({
                     <input
                       type="tel"
                       required
-                      placeholder="e.g. 7985257106"
+                      placeholder="e.g. +91 7985257106"
                       value={studentPhone}
                       onChange={(e) => setStudentPhone(e.target.value)}
                       className="w-full bg-[#101116] border border-white/15 focus:border-[#FFF00F] rounded-xl py-2.5 pl-10 pr-3 text-sm text-white placeholder-gray-600 outline-none transition"
@@ -336,7 +336,7 @@ export default function BookingModal({
             <div className="pt-2 border-t border-white/10 flex items-center justify-between">
               <div className="text-xs text-gray-400">
                 <span>Direct Contact: </span>
-                <strong className="text-white">7985257106</strong>
+                <strong className="text-white">+91 7985257106</strong>
               </div>
 
               <div className="flex space-x-3">

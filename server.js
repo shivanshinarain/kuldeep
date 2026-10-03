@@ -12,7 +12,7 @@ const academyInfo = {
   name: "Gaur Institute of Performing Art (GIPA)",
   instructor: "Kuldeep Gaur",
   role: "Sole Master Trainer, Lead Instructor & Founder",
-  phone: "7985257106",
+  phone: "+91 7985257106",
   email: "kuldeepgaur.gipa@gmail.com",
   address: "Punjabi Colony, Nehar Road, Rajgarh, Lakhimpur Kheri - 262701",
   landmark: "Near Guru Nanak Inter College / Guru Nanak Degree College",
@@ -63,7 +63,7 @@ let bookings = [
     id: "GIPA-7801",
     studentName: "Aman Verma",
     studentEmail: "aman.v@example.com",
-    studentPhone: "7985257106",
+    studentPhone: "+91 7985257106",
     teacherId: 1,
     teacherName: "Kuldeep Gaur",
     instrument: "Guitar",
@@ -172,5 +172,5 @@ app.delete('/api/bookings/:id', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`GIPA Backend running on port ${PORT} - Lead Instructor: Kuldeep Gaur (7985257106)`);
+  console.log(`GIPA Backend running on port ${PORT} - Lead Instructor: Kuldeep Gaur (+91 7985257106)`);
 });
