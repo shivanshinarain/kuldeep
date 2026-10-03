@@ -171,6 +171,10 @@ app.delete('/api/bookings/:id', (req, res) => {
   res.json({ success: true, message: `Booking ${id} cancelled successfully.` });
 });
 
-app.listen(PORT, () => {
-  console.log(`GIPA Backend running on port ${PORT} - Lead Instructor: Kuldeep Gaur (+91 7985257106)`);
-});
+export default app;
+
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`GIPA Backend running on port ${PORT} - Lead Instructor: Kuldeep Gaur (+91 7985257106)`);
+  });
+}
