@@ -40,3 +40,14 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #9E2F2F;
 }
+
+/* Touch responsiveness */
+@media (hover: none) {
+  button, a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+.touch-manipulation {
+  touch-action: manipulation;
+}

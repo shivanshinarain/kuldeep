@@ -186,6 +186,37 @@ export default function App() {
     }, 450);
   };
 
+  const playMusicalChime = (freqs = [261.63, 329.63, 392.00, 523.25]) => {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) {
+        const ctx = new AudioCtx();
+        freqs.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.07);
+
+          gain.gain.setValueAtTime(0, ctx.currentTime + idx * 0.07);
+          gain.gain.linearRampToValueAtTime(0.28, ctx.currentTime + idx * 0.07 + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.07 + 0.9);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + idx * 0.07);
+          osc.stop(ctx.currentTime + idx * 0.07 + 0.9);
+        });
+      }
+    } catch (e) {
+      console.warn("Audio chime error", e);
+    }
+  };
+
+  const handleKeepPlayingClick = () => {
+    playMusicalChime([261.63, 329.63, 392.00, 523.25]); // C Major triad arpeggio
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   // Form state
   const [formData, setFormData] = useState({
     name: '',
@@ -371,11 +402,15 @@ Thank you.`;
           {/* Right Hero Instrument Visual */}
           <div className="lg:col-span-5 relative flex justify-center">
             <div className="absolute inset-0 bg-gradient-to-tr from-[#9E2F2F]/10 to-[#E6B83A]/10 rounded-full filter blur-3xl -z-10 animate-pulse"></div>
-            <div className="relative group w-full max-w-md lg:max-w-none">
+            <div 
+              onClick={() => playMusicalChime([196.00, 246.94, 293.66, 392.00])}
+              className="relative group w-full max-w-md lg:max-w-none cursor-pointer active:scale-95 transition-transform duration-300 touch-manipulation"
+              title="Tap to preview guitar acoustic chord"
+            >
               <img 
                 src="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=1000&q=80" 
                 alt="Acoustic Electric Guitar" 
-                className="w-full h-[450px] lg:h-[580px] object-cover shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-[1.02]"
+                className="w-full h-[320px] sm:h-[420px] lg:h-[580px] object-cover shadow-2xl grayscale-0 md:grayscale md:group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-[1.02]"
               />
               <div className="absolute bottom-6 left-6 bg-[#111111] text-[#F4F0E8] p-4 backdrop-blur-md border border-[#F4F0E8]/20">
                 <span className="text-[10px] font-mono tracking-widest text-[#E6B83A] block uppercase">Featured Instrument</span>
@@ -515,12 +550,16 @@ Thank you.`;
           </div>
 
           <div className="lg:col-span-6 relative w-full">
-            <div className="relative overflow-hidden group w-full border border-[#F4F0E8]/10 bg-black/40 shadow-2xl">
+            <div 
+              onClick={() => playMusicalChime([261.63, 329.63, 392.00])}
+              className="relative overflow-hidden group w-full border border-[#F4F0E8]/10 bg-black/40 shadow-2xl cursor-pointer active:scale-95 transition-transform duration-300 touch-manipulation"
+              title="Tap to preview instrument tone"
+            >
               <img 
                 src={currentLesson.image} 
                 alt={currentLesson.title} 
                 loading="lazy"
-                className="w-full h-[260px] sm:h-[360px] md:h-[420px] lg:h-[480px] object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
+                className="w-full h-[240px] sm:h-[340px] md:h-[420px] lg:h-[480px] object-cover object-center grayscale-0 md:grayscale md:group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
               />
               <div 
                 className="absolute top-4 right-4 w-12 h-12 flex items-center justify-center font-mono font-black text-lg bg-[#111111] text-[#F4F0E8] shadow-md z-10"
@@ -580,12 +619,16 @@ Thank you.`;
             
             {/* Main Featured Grand Piano Image (7 cols on desktop, responsive full width on mobile) */}
             <div className="lg:col-span-7 flex flex-col justify-between">
-              <div className="relative group overflow-hidden border border-[#F4F0E8]/20 shadow-2xl bg-black/50">
+              <div 
+                onClick={() => playMusicalChime([261.63, 329.63, 392.00, 523.25])}
+                className="relative group overflow-hidden border border-[#F4F0E8]/20 shadow-2xl bg-black/50 cursor-pointer active:scale-95 transition-transform duration-300 touch-manipulation"
+                title="Tap to hear piano harmony"
+              >
                 <img 
                   src="https://images.unsplash.com/photo-1552422535-c45813c61732?auto=format&fit=crop&w=1400&q=85" 
                   alt="Concert Grand Piano at GIPA Studio" 
                   loading="lazy"
-                  className="w-full h-[280px] sm:h-[400px] md:h-[460px] lg:h-[500px] object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
+                  className="w-full h-[260px] sm:h-[380px] md:h-[460px] lg:h-[500px] object-cover object-center grayscale-0 md:grayscale md:group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none"></div>
                 
@@ -614,12 +657,16 @@ Thank you.`;
             <div className="lg:col-span-5 flex flex-col gap-6 justify-between">
               
               {/* Image 2: Hands on Keys */}
-              <div className="relative group overflow-hidden border border-[#F4F0E8]/20 shadow-xl bg-black/50">
+              <div 
+                onClick={() => playMusicalChime([329.63, 392.00, 493.88])}
+                className="relative group overflow-hidden border border-[#F4F0E8]/20 shadow-xl bg-black/50 cursor-pointer active:scale-95 transition-transform duration-300 touch-manipulation"
+                title="Tap to hear piano articulation"
+              >
                 <img 
                   src="https://images.unsplash.com/photo-1513883049090-d0b7439799bf?auto=format&fit=crop&w=1000&q=85" 
                   alt="Pianist Hands & Touch Mechanics" 
                   loading="lazy"
-                  className="w-full h-[180px] sm:h-[220px] object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
+                  className="w-full h-[180px] sm:h-[220px] object-cover object-center grayscale-0 md:grayscale md:group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
                 <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-xs font-mono">
@@ -629,12 +676,16 @@ Thank you.`;
               </div>
 
               {/* Image 3: Score & Upright Keys */}
-              <div className="relative group overflow-hidden border border-[#F4F0E8]/20 shadow-xl bg-black/50">
+              <div 
+                onClick={() => playMusicalChime([349.23, 440.00, 523.25])}
+                className="relative group overflow-hidden border border-[#F4F0E8]/20 shadow-xl bg-black/50 cursor-pointer active:scale-95 transition-transform duration-300 touch-manipulation"
+                title="Tap to hear harmony"
+              >
                 <img 
                   src="https://images.unsplash.com/photo-1571974599782-87624638275e?auto=format&fit=crop&w=1000&q=85" 
                   alt="Classical Sheet Music & Grand Staff" 
                   loading="lazy"
-                  className="w-full h-[180px] sm:h-[220px] object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
+                  className="w-full h-[180px] sm:h-[220px] object-cover object-center grayscale-0 md:grayscale md:group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
                 <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-xs font-mono">
@@ -672,10 +723,10 @@ Thank you.`;
                   <button
                     key={item.note}
                     onClick={() => handlePlayPianoNote(item)}
-                    className={`py-6 sm:py-8 px-2 flex flex-col items-center justify-between border transition-all text-center group cursor-pointer ${
+                    className={`py-6 sm:py-8 px-2 flex flex-col items-center justify-between border transition-all text-center group cursor-pointer touch-manipulation select-none ${
                       isActive 
                         ? 'bg-[#E6B83A] text-[#111111] border-[#E6B83A] scale-95 shadow-lg' 
-                        : 'bg-[#F4F0E8] text-[#111111] border-[#F4F0E8] hover:bg-[#E6B83A] hover:border-[#E6B83A] shadow-md'
+                        : 'bg-[#F4F0E8] text-[#111111] border-[#F4F0E8] hover:bg-[#E6B83A] hover:border-[#E6B83A] active:bg-[#E6B83A] active:scale-90 shadow-md'
                     }`}
                   >
                     <span className="font-mono text-xs font-bold opacity-60">{item.sub}</span>
@@ -751,7 +802,7 @@ Thank you.`;
             <img 
               src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1000&q=80" 
               alt="Kuldeep Gaur" 
-              className="w-full h-[550px] lg:h-[650px] object-cover grayscale shadow-2xl border border-[#F4F0E8]/20"
+              className="w-full h-[360px] sm:h-[480px] lg:h-[650px] object-cover grayscale-0 md:grayscale hover:grayscale-0 active:scale-[0.98] transition-all duration-500 shadow-2xl border border-[#F4F0E8]/20 cursor-pointer"
             />
             <div className="absolute bottom-6 right-6 bg-[#9E2F2F] text-[#F4F0E8] p-4 font-mono text-xs uppercase tracking-widest shadow-xl">
               Founder & Director • GIPA
@@ -1117,10 +1168,20 @@ Thank you.`;
             </div>
           </div>
 
-          <div className="text-center py-12 space-y-6">
-            <h2 className="text-5xl sm:text-7xl lg:text-[130px] font-black tracking-tight uppercase leading-none font-sans text-[#F4F0E8]/10 hover:text-[#F4F0E8] transition-colors duration-500">
+          <div className="text-center py-12 space-y-4">
+            <button
+              type="button"
+              onClick={handleKeepPlayingClick}
+              aria-label="Keep Playing - Tap to play musical chord and return to top"
+              className="text-5xl sm:text-7xl lg:text-[130px] font-black tracking-tight uppercase leading-none font-sans text-[#F4F0E8]/35 sm:text-[#F4F0E8]/20 hover:text-[#F4F0E8] active:text-[#E6B83A] active:scale-[0.97] transition-all duration-300 select-none cursor-pointer w-full text-center focus:outline-none touch-manipulation"
+            >
               KEEP PLAYING.
-            </h2>
+            </button>
+            <p className="text-xs font-mono text-[#E6B83A]/70 uppercase tracking-widest flex items-center justify-center space-x-2">
+              <Sparkles size={12} className="text-[#E6B83A]" />
+              <span>Tap to Play Harmony & Return to Top</span>
+              <Sparkles size={12} className="text-[#E6B83A]" />
+            </p>
           </div>
 
           <div className="flex flex-col sm:flex-row justify-between items-center text-xs font-mono text-[#F4F0E8]/50 pt-8 border-t border-[#F4F0E8]/10 space-y-4 sm:space-y-0">
