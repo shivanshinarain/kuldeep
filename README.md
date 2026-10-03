@@ -69,3 +69,4 @@ This runs:
 | `POST` | `/api/bookings` | Create new masterclass reservation |
 | `DELETE` | `/api/bookings/:id` | Cancel an existing booking |
 # kuldeepgaur
+# kuldeepgaur
