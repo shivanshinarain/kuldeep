@@ -115,24 +115,34 @@ app.get('/api/bookings', (req, res) => {
   res.json(bookings);
 });
 
-// Book a trial session / admission consultation directly with Kuldeep Gaur
-app.post('/api/bookings', (req, res) => {
-  const { studentName, studentEmail, studentPhone, courseTitle, date, timeSlot, lessonTopic } = req.body;
-  if (!studentName || !date || !timeSlot) {
-    return res.status(400).json({ error: "Missing required details: studentName, date, and timeSlot." });
+// Book a trial session / admission consultation / enquiry directly with Kuldeep Gaur
+const handleBookingOrEnquiry = (req, res) => {
+  const studentName = req.body.studentName || req.body.name;
+  const studentPhone = req.body.studentPhone || req.body.phone;
+  const studentEmail = req.body.studentEmail || req.body.email || "student@gipa.in";
+  const courseTitle = req.body.courseTitle || req.body.interest || "Guitar";
+  const level = req.body.level || "Beginner";
+  const message = req.body.message || "";
+  const date = req.body.date || new Date().toISOString().split('T')[0];
+  const timeSlot = req.body.timeSlot || "04:30 PM";
+
+  if (!studentName || !studentPhone) {
+    return res.status(400).json({ error: "Missing required details: Name and Phone number are required." });
   }
 
   const newBooking = {
     id: `GIPA-${Math.floor(1000 + Math.random() * 9000)}`,
     studentName,
-    studentEmail: studentEmail || "student@gipa.in",
-    studentPhone: studentPhone || "7985257106",
+    studentEmail,
+    studentPhone,
     teacherId: 1,
     teacherName: "Kuldeep Gaur",
-    instrument: courseTitle || "Music Training",
+    instrument: courseTitle,
+    level,
     date,
     timeSlot,
-    lessonTopic: lessonTopic || `Direct 1-on-1 Training with Kuldeep Gaur (${courseTitle || 'Music'})`,
+    message,
+    lessonTopic: req.body.lessonTopic || `Direct Mentorship with Kuldeep Gaur (${courseTitle} - ${level})`,
     status: "Confirmed",
     createdAt: new Date().toISOString()
   };
@@ -141,11 +151,14 @@ app.post('/api/bookings', (req, res) => {
 
   res.status(201).json({
     success: true,
-    message: `Session booked successfully with Kuldeep Gaur! Call 7985257106 for any queries.`,
+    message: `Enquiry received! Kuldeep Gaur will contact you directly at ${studentPhone}.`,
     booking: newBooking,
-    bookingDetails: { studentName, teacherId: 1, date, timeSlot }
+    bookingDetails: { studentName, teacherId: 1, date, timeSlot, courseTitle }
   });
-});
+};
+
+app.post('/api/bookings', handleBookingOrEnquiry);
+app.post('/api/enquiries', handleBookingOrEnquiry);
 
 // Cancel a booking
 app.delete('/api/bookings/:id', (req, res) => {

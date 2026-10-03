@@ -3,14 +3,18 @@
 @layer base {
   :root {
     --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    --font-heading: 'Outfit', system-ui, -apple-system, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-heading: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-mono: 'Space Mono', monospace;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   body {
     font-family: var(--font-sans);
-    background-color: #020617;
-    color: #f1f5f9;
+    background-color: #F4F0E8;
+    color: #111111;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -28,25 +32,11 @@
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: #E8E3D8;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 4px;
+  background: #111111;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
-}
-
-@keyframes pulseGlow {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 30px rgba(245, 158, 11, 0.8), 0 0 60px rgba(99, 102, 241, 0.4);
-  }
-}
-
-.metronome-pulse {
-  animation: pulseGlow 0.3s cubic-bezier(0.4, 0, 0.6, 1);
+  background: #9E2F2F;
 }
