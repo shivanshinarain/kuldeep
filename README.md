@@ -84,3 +84,4 @@ npm run build
 | `GET` | `/api/bookings` | View confirmed student bookings & enquiries |
 | `POST` | `/api/enquiries` | Submit student admission or lesson enquiry |
 | `POST` | `/api/bookings` | Create scheduled masterclass reservation |
+# kuldeep
