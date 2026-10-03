@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { 
   Play, 
   ArrowRight, 
@@ -15,22 +15,10 @@ import {
   Phone, 
   Mail, 
   ChevronRight, 
-  Star,
-  Sparkles,
-  ExternalLink,
-  Flame,
-  Award,
-  Video,
-  CheckCircle,
-  Clock,
-  Trash2
+  Star, 
+  Sparkles, 
+  ExternalLink 
 } from 'lucide-react';
-
-import Metronome from './components/Metronome';
-import ChordVisualizer from './components/ChordVisualizer';
-import PracticeTimer from './components/PracticeTimer';
-import BookingModal from './components/BookingModal';
-import VirtualRoomModal from './components/VirtualRoomModal';
 
 // ==========================================
 // GIPA - GAUR INSTITUTE OF PERFORMING ART
@@ -148,25 +136,18 @@ const faqsData = [
   { q: "What instruments and disciplines can I learn?", a: "Guitar, Piano, Drums, Violin, Tabla, Harmonium, Classical & Western Vocals, and Dance (Kathak, Folk, Bhangra)." },
   { q: "Are complete beginners welcome?", a: "Yes. Beginners receive patient, step-by-step foundation training designed to build unshakeable technique." },
   { q: "Where is the institute located?", a: "Punjabi Colony, Nehar Road, Rajgarh, Lakhimpur Kheri - 262701 (Near Guru Nanak Inter College / Guru Nanak Degree College)." },
-  { q: "How are lesson times and schedules booked?", a: "You can book trial slots or regular weekly schedules directly by calling Kuldeep Gaur at 7985257106 or submitting an enquiry below." }
+  { q: "How are lesson times and schedules booked?", a: "You can book trial slots or regular weekly schedules directly by calling Kuldeep Gaur at 7985257106." }
 ];
 
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeLessonIndex, setActiveLessonIndex] = useState(0);
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
-  const [cursorPos, setCursorPos] = useState({ x: -100, y: -100 });
-  const [isHovered, setIsHovered] = useState(false);
-
-  // Modal states
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
-  const [preselectedCourse, setPreselectedCourse] = useState('Guitar');
-  const [isVirtualRoomOpen, setIsVirtualRoomOpen] = useState(false);
-  const [currentVirtualLesson, setCurrentVirtualLesson] = useState(null);
 
   // Form state
   const [formData, setFormData] = useState({
     name: '',
+    age: '',
     phone: '',
     email: '',
     interest: 'Guitar',
@@ -174,47 +155,6 @@ export default function App() {
     message: ''
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formError, setFormError] = useState('');
-
-  // Practice & streak stats
-  const [streakDays, setStreakDays] = useState(6);
-  const [practiceMinutesThisWeek, setPracticeMinutesThisWeek] = useState(330);
-  const [toastNotification, setToastNotification] = useState(null);
-
-  // Bookings list synced from backend
-  const [bookings, setBookings] = useState([]);
-
-  // Custom cursor tracking (desktop only)
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setCursorPos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  // Load bookings from backend
-  const fetchBookings = async () => {
-    try {
-      const res = await fetch('/api/bookings');
-      if (res.ok) {
-        const data = await res.json();
-        if (Array.isArray(data)) setBookings(data);
-      }
-    } catch (err) {
-      console.log("Using local state for bookings");
-    }
-  };
-
-  useEffect(() => {
-    fetchBookings();
-  }, []);
-
-  const showToast = (message) => {
-    setToastNotification(message);
-    setTimeout(() => setToastNotification(null), 4000);
-  };
 
   const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -222,57 +162,16 @@ export default function App() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    setFormError('');
-    setIsSubmitting(true);
-
     try {
-      const res = await fetch('/api/enquiries', {
+      await fetch('/api/enquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to submit enquiry.');
-
-      setFormSubmitted(true);
-      fetchBookings();
-      showToast(`Enquiry sent! Kuldeep Gaur will reach out to ${formData.phone}.`);
     } catch (err) {
-      // Fallback
-      setFormSubmitted(true);
-      showToast(`Enquiry received! We will call ${formData.phone} shortly.`);
-    } finally {
-      setIsSubmitting(false);
+      console.log("Enquiry logged locally", err);
     }
-  };
-
-  const handleOpenBookingModal = (courseName = 'Guitar') => {
-    setPreselectedCourse(courseName);
-    setIsBookingOpen(true);
-  };
-
-  const handleBookingSuccess = (newBooking) => {
-    fetchBookings();
-    showToast(`Session reserved for ${newBooking.date} with Kuldeep Gaur!`);
-  };
-
-  const handleCancelBooking = async (bookingId) => {
-    try {
-      await fetch(`/api/bookings/${bookingId}`, { method: 'DELETE' });
-    } catch (err) {}
-    setBookings(prev => prev.filter(b => b.id !== bookingId));
-    showToast(`Booking ${bookingId} cancelled.`);
-  };
-
-  const handleLogPracticeSession = (minutes) => {
-    setPracticeMinutesThisWeek(prev => prev + minutes);
-    showToast(`Logged ${minutes} mins to your practice streak! 🔥`);
-  };
-
-  const handleJoinVirtualRoom = (lesson) => {
-    setCurrentVirtualLesson(lesson);
-    setIsVirtualRoomOpen(true);
+    setFormSubmitted(true);
   };
 
   const currentLesson = lessonsData[activeLessonIndex];
@@ -280,14 +179,6 @@ export default function App() {
   return (
     <div className="bg-[#F4F0E8] text-[#111111] font-sans selection:bg-[#9E2F2F] selection:text-[#F4F0E8] relative overflow-x-hidden">
       
-      {/* Toast Notification */}
-      {toastNotification && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#111111] border-2 border-[#9E2F2F] text-[#F4F0E8] px-5 py-3 rounded-none shadow-2xl flex items-center space-x-3 animate-in slide-in-from-bottom-5">
-          <Sparkles className="text-[#E6B83A]" size={18} />
-          <span className="text-xs font-mono font-bold tracking-wider">{toastNotification}</span>
-        </div>
-      )}
-
       {/* Subtle Grain Overlay */}
       <div 
         className="fixed inset-0 pointer-events-none z-50 opacity-[0.03]"
@@ -296,43 +187,25 @@ export default function App() {
         }}
       />
 
-      {/* Custom Cursor */}
-      <div 
-        className={`fixed pointer-events-none z-50 rounded-full transition-transform duration-100 ease-out hidden md:block ${isHovered ? 'w-16 h-16 bg-[#9E2F2F]/20 backdrop-blur-sm -translate-x-1/2 -translate-y-1/2' : 'w-4 h-4 bg-[#9E2F2F] -translate-x-1/2 -translate-y-1/2'}`}
-        style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}
-      />
-
-      {/* Top Banner / Announcement Bar */}
-      <div className="bg-[#111111] text-[#F4F0E8] font-mono font-bold text-xs py-2.5 px-4 text-center uppercase tracking-widest border-b border-[#F4F0E8]/10 flex items-center justify-center space-x-2">
-        <span className="text-[#E6B83A]">⚡</span>
-        <span>Admissions Open • Direct Guidance Under Kuldeep Gaur • Call: </span>
-        <a href="tel:7985257106" className="text-[#E6B83A] hover:underline font-black">7985257106</a>
-        <span className="text-[#E6B83A]">⚡</span>
-      </div>
-
       {/* ================= GLOBAL NAVIGATION ================= */}
-      <header className="sticky top-0 left-0 right-0 z-40 bg-[#F4F0E8]/90 backdrop-blur-md border-b border-[#111111]/10 transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 sm:h-24 flex items-center justify-between">
+      <header className="fixed top-0 left-0 right-0 z-40 bg-[#F4F0E8]/90 backdrop-blur-md border-b border-[#111111]/10 transition-all duration-300">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 h-24 flex items-center justify-between">
           
           {/* Logo / Wordmark */}
           <a href="#" className="flex flex-col group">
-            <span className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tighter uppercase font-mono group-hover:text-[#9E2F2F] transition-colors">
+            <span className="text-2xl lg:text-3xl font-black tracking-tighter uppercase font-mono group-hover:text-[#9E2F2F] transition-colors">
               KULDEEP GAUR
             </span>
-            <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-[#111111]/60 font-medium">
+            <span className="text-[10px] uppercase tracking-widest text-[#111111]/60 font-medium">
               Gaur Institute of Performing Art (GIPA)
             </span>
           </a>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center space-x-8 text-xs font-mono uppercase tracking-wider font-bold">
+          <nav className="hidden lg:flex items-center space-x-8 text-sm font-semibold uppercase tracking-wider">
             <a href="#lessons" className="hover:text-[#9E2F2F] transition-colors py-2">Lessons</a>
             <a href="#about" className="hover:text-[#9E2F2F] transition-colors py-2">About</a>
             <a href="#journey" className="hover:text-[#9E2F2F] transition-colors py-2">Journey</a>
-            <a href="#practice" className="hover:text-[#9E2F2F] transition-colors py-2 flex items-center space-x-1">
-              <Sliders size={13} className="text-[#9E2F2F]" />
-              <span>Practice Hub</span>
-            </a>
             <a href="#knowledge" className="hover:text-[#9E2F2F] transition-colors py-2">Theory</a>
             <a href="#faq" className="hover:text-[#9E2F2F] transition-colors py-2">FAQ</a>
             <a href="#contact" className="hover:text-[#9E2F2F] transition-colors py-2">Contact</a>
@@ -341,22 +214,12 @@ export default function App() {
           {/* CTA */}
           <div className="hidden lg:flex items-center space-x-4">
             <a 
-              href="tel:7985257106"
-              className="text-xs font-mono font-bold text-[#111111] hover:text-[#9E2F2F] transition flex items-center space-x-1.5"
-            >
-              <Phone size={14} className="text-[#9E2F2F]" />
-              <span>7985257106</span>
-            </a>
-
-            <button 
-              onClick={() => handleOpenBookingModal('Guitar')}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
+              href="#contact"
               className="bg-[#111111] text-[#F4F0E8] px-6 py-3 text-xs font-black uppercase tracking-widest hover:bg-[#9E2F2F] transition-all rounded-none flex items-center space-x-2 shadow-lg"
             >
-              <span>Book Trial</span>
+              <span>Start Learning</span>
               <ArrowRight size={14} />
-            </button>
+            </a>
           </div>
 
           {/* Mobile Hamburger */}
@@ -383,25 +246,24 @@ export default function App() {
             </button>
           </div>
 
-          <div className="flex flex-col space-y-6 text-2xl sm:text-3xl font-black uppercase tracking-tight">
+          <div className="flex flex-col space-y-6 text-3xl font-black uppercase tracking-tight">
             <a href="#lessons" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition">01. Lessons</a>
             <a href="#about" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition">02. About Kuldeep</a>
             <a href="#journey" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition">03. Learning Journey</a>
-            <a href="#practice" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition">04. Practice Hub</a>
-            <a href="#knowledge" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition">05. Music Knowledge</a>
-            <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition">06. FAQ</a>
-            <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition text-[#E87532]">07. Contact</a>
+            <a href="#knowledge" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition">04. Music Knowledge</a>
+            <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition">05. FAQ</a>
+            <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition text-[#E87532]">06. Contact</a>
           </div>
 
           <div className="border-t border-[#F4F0E8]/20 pt-6 flex flex-col space-y-2 text-xs font-mono text-[#F4F0E8]/60">
             <span>Gaur Institute of Performing Art (GIPA)</span>
-            <span>Punjabi Colony, Nehar Road, Lakhimpur Kheri • 7985257106</span>
+            <span>Lakhimpur Kheri • 7985257106</span>
           </div>
         </div>
       )}
 
       {/* ================= HERO SECTION ================= */}
-      <section className="relative min-h-[85vh] lg:min-h-screen pt-12 lg:pt-20 pb-20 px-6 lg:px-12 flex flex-col justify-between max-w-7xl mx-auto">
+      <section className="relative min-h-screen pt-32 lg:pt-40 pb-20 px-6 lg:px-12 flex flex-col justify-between max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-12 gap-12 items-center my-auto">
           
           {/* Left Text Column */}
@@ -411,7 +273,7 @@ export default function App() {
               <span>Music, Played Differently</span>
             </div>
 
-            <h1 className="text-5xl sm:text-7xl lg:text-[105px] font-black tracking-tight leading-[0.95] uppercase font-sans">
+            <h1 className="text-5xl sm:text-7xl lg:text-[110px] font-black tracking-tight leading-[0.95] uppercase font-sans">
               MUSIC, <br />
               PLAYED <br />
               <span className="text-[#9E2F2F]">DIFFERENTLY.</span>
@@ -424,21 +286,17 @@ export default function App() {
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-4 sm:space-y-0 sm:space-x-6 pt-4">
               <a 
                 href="#lessons"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
                 className="bg-[#9E2F2F] text-[#F4F0E8] px-8 py-4 text-sm font-black uppercase tracking-widest hover:bg-[#111111] transition-all text-center shadow-xl flex items-center justify-center space-x-3"
               >
                 <span>Explore Lessons</span>
                 <ArrowRight size={16} />
               </a>
-              <button 
-                onClick={() => handleOpenBookingModal('Guitar')}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
+              <a 
+                href="#about"
                 className="border-2 border-[#111111] text-[#111111] px-8 py-4 text-sm font-black uppercase tracking-widest hover:bg-[#111111] hover:text-[#F4F0E8] transition-all text-center flex items-center justify-center space-x-3"
               >
-                <span>Book 1-on-1 Trial</span>
-              </button>
+                <span>Meet Kuldeep</span>
+              </a>
             </div>
           </div>
 
@@ -449,7 +307,7 @@ export default function App() {
               <img 
                 src="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=1000&q=80" 
                 alt="Acoustic Electric Guitar" 
-                className="w-full h-[450px] lg:h-[560px] object-cover shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-[1.02]"
+                className="w-full h-[450px] lg:h-[580px] object-cover shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-[1.02]"
               />
               <div className="absolute bottom-6 left-6 bg-[#111111] text-[#F4F0E8] p-4 backdrop-blur-md border border-[#F4F0E8]/20">
                 <span className="text-[10px] font-mono tracking-widest text-[#E6B83A] block uppercase">Featured Instrument</span>
@@ -569,20 +427,13 @@ export default function App() {
               </div>
             </div>
 
-            <div className="pt-4 flex flex-wrap gap-4">
-              <button 
-                onClick={() => handleOpenBookingModal(currentLesson.title)}
+            <div className="pt-4">
+              <a 
+                href="#contact" 
                 className="inline-flex items-center space-x-3 px-8 py-4 bg-[#F4F0E8] text-[#111111] font-black text-xs uppercase tracking-widest hover:bg-[#9E2F2F] hover:text-[#F4F0E8] transition shadow-lg"
               >
                 <span>Enroll in {currentLesson.title}</span>
                 <ArrowRight size={16} />
-              </button>
-
-              <a
-                href="#contact"
-                className="inline-flex items-center space-x-2 px-6 py-4 border border-[#F4F0E8]/30 text-[#F4F0E8] font-mono text-xs uppercase tracking-widest hover:border-[#F4F0E8] transition"
-              >
-                <span>Ask a Question</span>
               </a>
             </div>
           </div>
@@ -676,16 +527,11 @@ export default function App() {
               </div>
             </div>
 
-            <div className="pt-4 flex flex-wrap items-center gap-6">
-              <button 
-                onClick={() => handleOpenBookingModal('Guitar')}
-                className="bg-[#E6B83A] text-[#111111] px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-[#F4F0E8] transition shadow-xl"
-              >
+            <div className="pt-4 flex items-center space-x-6">
+              <a href="#contact" className="bg-[#E6B83A] text-[#111111] px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-[#F4F0E8] transition">
                 Book a Session with Kuldeep
-              </button>
-              <a href="tel:7985257106" className="text-xs font-mono text-[#F4F0E8]/80 hover:text-[#E6B83A] transition">
-                Call: 7985257106
               </a>
+              <span className="text-xs font-mono text-[#F4F0E8]/60">Call: 7985257106</span>
             </div>
           </div>
 
@@ -736,45 +582,19 @@ export default function App() {
         </div>
       </section>
 
-      {/* ================= INTERACTIVE PRACTICE HUB SECTION ================= */}
-      <section id="practice" className="py-24 lg:py-36 px-6 lg:px-12 max-w-7xl mx-auto">
+      {/* ================= MUSIC KNOWLEDGE SECTION ================= */}
+      <section id="knowledge" className="py-24 lg:py-36 px-6 lg:px-12 max-w-7xl mx-auto">
         <div className="space-y-16">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6">
             <div>
               <span className="text-xs font-mono uppercase tracking-widest text-[#9E2F2F] block mb-2">
-                // Interactive Studio Tools
-              </span>
-              <h2 className="text-4xl sm:text-6xl font-black tracking-tight uppercase">
-                PRACTICE HUB & METRONOME
-              </h2>
-            </div>
-            <p className="text-sm font-mono text-[#111111]/70 max-w-md">
-              High-precision Web Audio click track and multi-instrument chord visualizer for daily mastery.
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-8">
-            <Metronome />
-            <ChordVisualizer />
-          </div>
-
-          <PracticeTimer onLogSession={handleLogPracticeSession} />
-        </div>
-      </section>
-
-      {/* ================= MUSIC KNOWLEDGE SECTION ================= */}
-      <section id="knowledge" className="py-24 lg:py-36 bg-[#111111] text-[#F4F0E8] px-6 lg:px-12">
-        <div className="max-w-7xl mx-auto space-y-16">
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6">
-            <div>
-              <span className="text-xs font-mono uppercase tracking-widest text-[#E6B83A] block mb-2">
                 // Educational Pillars
               </span>
               <h2 className="text-4xl sm:text-6xl font-black tracking-tight uppercase">
                 UNDERSTAND THE MUSIC
               </h2>
             </div>
-            <p className="text-sm font-mono text-[#F4F0E8]/70 max-w-md">
+            <p className="text-sm font-mono text-[#111111]/70 max-w-md">
               Every masterclass at GIPA is backed by comprehensive theory, ear training, rhythm precision, and expressive dynamics.
             </p>
           </div>
@@ -785,10 +605,10 @@ export default function App() {
               { title: "HARMONY & CHORDS", desc: "Unlock chord inversions, voice leading, extensions, and the emotional resonance behind chord progressions." },
               { title: "MELODY & IMPROV", desc: "Express your inner voice through scales, phrasing, articulation, and fearless musical improvisation." }
             ].map((pillar, idx) => (
-              <div key={idx} className="border border-[#F4F0E8]/20 p-8 space-y-6 bg-[#161616] hover:border-[#E6B83A] transition-all group">
-                <span className="text-xs font-mono uppercase tracking-widest text-[#E6B83A] block">Pillar 0{idx + 1}</span>
-                <h3 className="text-3xl font-black uppercase text-white">{pillar.title}</h3>
-                <p className="text-sm text-[#F4F0E8]/70 font-mono leading-relaxed">{pillar.desc}</p>
+              <div key={idx} className="border-2 border-[#111111] p-8 space-y-6 bg-[#F4F0E8] hover:bg-[#111111] hover:text-[#F4F0E8] transition-all group">
+                <span className="text-xs font-mono uppercase tracking-widest text-[#9E2F2F] block">Pillar 0{idx + 1}</span>
+                <h3 className="text-3xl font-black uppercase">{pillar.title}</h3>
+                <p className="text-sm opacity-80 font-mono leading-relaxed">{pillar.desc}</p>
               </div>
             ))}
           </div>
@@ -901,7 +721,7 @@ export default function App() {
                 <span className="text-5xl block">🎵</span>
                 <h3 className="text-3xl font-black uppercase">Enquiry Received</h3>
                 <p className="text-sm font-mono text-[#F4F0E8]/70 max-w-md mx-auto">
-                  Thank you for reaching out to GIPA. Kuldeep Gaur will review your message and contact you directly at <strong className="text-[#E6B83A]">{formData.phone || "your phone"}</strong>.
+                  Thank you for reaching out to GIPA. Kuldeep Gaur will review your message and contact you shortly at {formData.phone || formData.email}.
                 </p>
                 <button 
                   onClick={() => setFormSubmitted(false)}
@@ -937,7 +757,7 @@ export default function App() {
                       required 
                       value={formData.phone} 
                       onChange={handleFormChange}
-                      placeholder="e.g. +91 79852 57106" 
+                      placeholder="e.g. +91 98765 43210" 
                       className="w-full bg-[#1A1A1A] border border-[#F4F0E8]/20 p-4 text-[#F4F0E8] font-mono text-sm focus:border-[#E6B83A] outline-none"
                     />
                   </div>
@@ -990,10 +810,9 @@ export default function App() {
 
                 <button 
                   type="submit" 
-                  disabled={isSubmitting}
-                  className="w-full py-5 bg-[#E6B83A] text-[#111111] font-black uppercase tracking-widest hover:bg-[#F4F0E8] transition shadow-xl text-sm disabled:opacity-50"
+                  className="w-full py-5 bg-[#E6B83A] text-[#111111] font-black uppercase tracking-widest hover:bg-[#F4F0E8] transition shadow-xl text-sm"
                 >
-                  {isSubmitting ? 'Sending...' : 'Send Enquiry to Kuldeep Gaur'}
+                  Send Enquiry to Kuldeep Gaur
                 </button>
               </form>
             )}
@@ -1019,7 +838,6 @@ export default function App() {
               <a href="#lessons" className="hover:text-[#E6B83A] transition">Lessons</a>
               <a href="#about" className="hover:text-[#E6B83A] transition">About</a>
               <a href="#journey" className="hover:text-[#E6B83A] transition">Journey</a>
-              <a href="#practice" className="hover:text-[#E6B83A] transition">Practice</a>
               <a href="#knowledge" className="hover:text-[#E6B83A] transition">Theory</a>
               <a href="#faq" className="hover:text-[#E6B83A] transition">FAQ</a>
               <a href="#contact" className="hover:text-[#E6B83A] transition">Contact</a>
@@ -1040,20 +858,6 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Booking Modal */}
-      <BookingModal
-        isOpen={isBookingOpen}
-        onClose={() => setIsBookingOpen(false)}
-        preselectedCourse={preselectedCourse}
-        onBookingSuccess={handleBookingSuccess}
-      />
-
-      {/* Virtual Live Studio Modal */}
-      <VirtualRoomModal
-        isOpen={isVirtualRoomOpen}
-        onClose={() => setIsVirtualRoomOpen(false)}
-        lesson={currentVirtualLesson}
-      />
     </div>
   );
 }
