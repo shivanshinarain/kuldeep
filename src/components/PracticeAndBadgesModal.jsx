@@ -12,8 +12,6 @@ import {
 } from 'lucide-react';
 
 export default function PracticeAndBadgesModal({ isOpen, onClose }) {
-  if (!isOpen) return null;
-
   // Practice Checklist State
   const [tasks, setTasks] = useState([
     { id: 1, title: 'Instrument Tune-Up', detail: 'Check all 6 strings or check keyboard pitch accuracy with the Tuner', completed: false, category: 'Tuning' },
@@ -22,6 +20,8 @@ export default function PracticeAndBadgesModal({ isOpen, onClose }) {
     { id: 4, title: '4/4 Metronome Rhythm Subdivision', detail: 'Count out loud 1 - & - 2 - & - 3 - & - 4 - & alongside click', completed: false, category: 'Rhythm' },
     { id: 5, title: 'Ear Training Identification', detail: 'Score 5 correct answers in the Ear Training Lab pitch challenge', completed: false, category: 'Aural' },
   ]);
+
+  if (!isOpen) return null;
 
   const toggleTask = (id) => {
     setTasks(tasks.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)));

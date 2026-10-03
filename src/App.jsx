@@ -226,34 +226,27 @@ export default function App() {
     e.preventDefault();
 
     const name = (formData.name || '').trim();
-    const studentName = (formData.studentName || '').trim() || name;
     const phone = (formData.phone || '').trim();
-    const age = (formData.age || '').trim();
     const interest = formData.interest || 'Guitar';
     const level = formData.level || 'Beginner';
-    const preferredDays = formData.preferredDays || 'Flexible';
-    const deliveryMode = formData.deliveryMode || 'Offline';
     const message = (formData.message || '').trim();
 
+    // Required-field validation
     if (!name || !phone || !interest) {
-      alert('Please fill out your Name, Phone Number, and Instrument.');
       return;
     }
 
     const whatsappMessage = `Hello Kuldeep Gaur,
 
-I would like to book a music lesson / enquire about admission at Gaur Institute of Performing Art (GIPA).
+I have an enquiry regarding music lessons/admission at Gaur Institute of Performing Art (GIPA).
 
-• Parent / Enquirer Name: ${name}
-• Student Name: ${studentName} ${age ? `(Age: ${age})` : ''}
-• Phone Number: ${phone}
-• Instrument / Discipline: ${interest}
-• Current Level: ${level}
-• Preferred Days: ${preferredDays}
-• Learning Mode: ${deliveryMode}
-• Goals / Background: ${message || 'Ready to start learning.'}
+Name: ${name}
+Phone Number: ${phone}
+Instrument / Interest: ${interest}
+Experience Level: ${level}
+Message / Goals: ${message || 'N/A'}
 
-Please let me know about available slots and enrollment details.
+I would like to know more about the lessons and admission process.
 
 Thank you.`;
 
@@ -1110,7 +1103,7 @@ Thank you.`;
                   type="submit" 
                   className="w-full py-4 sm:py-5 bg-[#E6B83A] text-[#111111] font-black uppercase tracking-widest hover:bg-[#F4F0E8] transition shadow-xl text-xs sm:text-sm active:scale-[0.99] touch-manipulation"
                 >
-                  BOOK A LESSON WITH KULDEEP GAUR
+                  SEND ENQUIRY TO KULDEEP GAUR
                 </button>
               </form>
             )}
