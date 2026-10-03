@@ -49,8 +49,8 @@ const lessonsData = [
     description: "Understand keyboard harmony, voice leading, classical interpretation, and contemporary chord progressions under direct mentorship.",
     accent: "#E6B83A",
     bgColor: "#14130F",
-    // Premium, dramatic, high-end editorial grand piano photograph
-    image: "https://images.unsplash.com/photo-1520523839896-5742257ca122?auto=format&fit=crop&w=1400&q=85",
+    // Premium, dramatic concert grand piano photograph
+    image: "https://images.unsplash.com/photo-1552422535-c45813c61732?auto=format&fit=crop&w=1400&q=85",
     details: [
       "Touch, Dynamics & Articulation",
       "Standard Notation & Lead Sheets",
@@ -140,10 +140,51 @@ const faqsData = [
   { q: "How are lesson times and schedules booked?", a: "You can book trial slots or regular weekly schedules directly by calling Kuldeep Gaur at 7985257106." }
 ];
 
+const pianoNotes = [
+  { note: "C4", key: "C", freq: 261.63, sub: "Root" },
+  { note: "D4", key: "D", freq: 293.66, sub: "2nd" },
+  { note: "E4", key: "E", freq: 329.63, sub: "Maj 3rd" },
+  { note: "F4", key: "F", freq: 349.23, sub: "4th" },
+  { note: "G4", key: "G", freq: 392.00, sub: "5th" },
+  { note: "A4", key: "A", freq: 440.00, sub: "6th" },
+  { note: "B4", key: "B", freq: 493.88, sub: "Maj 7th" },
+  { note: "C5", key: "C", freq: 523.25, sub: "Octave" }
+];
+
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeLessonIndex, setActiveLessonIndex] = useState(0);
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
+  const [activePianoNote, setActivePianoNote] = useState(null);
+
+  const handlePlayPianoNote = (noteObj) => {
+    setActivePianoNote(noteObj.note);
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) {
+        const ctx = new AudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(noteObj.freq, ctx.currentTime);
+
+        gain.gain.setValueAtTime(0, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.35, ctx.currentTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.2);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 1.2);
+      }
+    } catch (err) {
+      console.warn("AudioContext tone error", err);
+    }
+    setTimeout(() => {
+      setActivePianoNote((curr) => (curr === noteObj.note ? null : curr));
+    }, 450);
+  };
 
   // Form state
   const [formData, setFormData] = useState({
@@ -205,6 +246,7 @@ export default function App() {
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center space-x-8 text-sm font-semibold uppercase tracking-wider">
             <a href="#lessons" className="hover:text-[#9E2F2F] transition-colors py-2">Lessons</a>
+            <a href="#piano" className="hover:text-[#9E2F2F] transition-colors py-2">Piano</a>
             <a href="#about" className="hover:text-[#9E2F2F] transition-colors py-2">About</a>
             <a href="#journey" className="hover:text-[#9E2F2F] transition-colors py-2">Journey</a>
             <a href="#knowledge" className="hover:text-[#9E2F2F] transition-colors py-2">Theory</a>
@@ -249,11 +291,12 @@ export default function App() {
 
           <div className="flex flex-col space-y-6 text-3xl font-black uppercase tracking-tight">
             <a href="#lessons" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition">01. Lessons</a>
-            <a href="#about" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition">02. About Kuldeep</a>
-            <a href="#journey" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition">03. Learning Journey</a>
-            <a href="#knowledge" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition">04. Music Knowledge</a>
-            <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition">05. FAQ</a>
-            <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition text-[#E87532]">06. Contact</a>
+            <a href="#piano" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition text-[#E6B83A]">02. Piano Studio</a>
+            <a href="#about" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition">03. About Kuldeep</a>
+            <a href="#journey" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition">04. Learning Journey</a>
+            <a href="#knowledge" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition">05. Music Knowledge</a>
+            <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition">06. FAQ</a>
+            <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#9E2F2F] transition text-[#E87532]">07. Contact</a>
           </div>
 
           <div className="border-t border-[#F4F0E8]/20 pt-6 flex flex-col space-y-2 text-xs font-mono text-[#F4F0E8]/60">
@@ -431,6 +474,14 @@ export default function App() {
             <div className="pt-4">
               <a 
                 href="#contact" 
+                onClick={() => setFormData(prev => ({ 
+                  ...prev, 
+                  interest: currentLesson.title === 'RHYTHM & DRUMS' ? 'Drums & Rhythm' : 
+                            currentLesson.title === 'MUSIC THEORY' ? 'Music Theory' : 
+                            currentLesson.title === 'DANCE & EXPRESSION' ? 'Dance' : 
+                            currentLesson.title === 'VOCALS' ? 'Vocals' : 
+                            currentLesson.title === 'PIANO' ? 'Piano' : 'Guitar' 
+                }))}
                 className="inline-flex items-center space-x-3 px-8 py-4 bg-[#F4F0E8] text-[#111111] font-black text-xs uppercase tracking-widest hover:bg-[#9E2F2F] hover:text-[#F4F0E8] transition shadow-lg"
               >
                 <span>Enroll in {currentLesson.title}</span>
@@ -439,18 +490,23 @@ export default function App() {
             </div>
           </div>
 
-          <div className="lg:col-span-6 relative">
-            <div className="relative overflow-hidden group">
+          <div className="lg:col-span-6 relative w-full">
+            <div className="relative overflow-hidden group w-full border border-[#F4F0E8]/10 bg-black/40 shadow-2xl">
               <img 
                 src={currentLesson.image} 
                 alt={currentLesson.title} 
-                className="w-full h-[400px] lg:h-[480px] object-cover grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
+                loading="lazy"
+                className="w-full h-[260px] sm:h-[360px] md:h-[420px] lg:h-[480px] object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
               />
               <div 
-                className="absolute top-4 right-4 w-12 h-12 flex items-center justify-center font-mono font-black text-lg bg-[#111111] text-[#F4F0E8]"
+                className="absolute top-4 right-4 w-12 h-12 flex items-center justify-center font-mono font-black text-lg bg-[#111111] text-[#F4F0E8] shadow-md z-10"
                 style={{ borderLeft: `4px solid ${currentLesson.accent}` }}
               >
                 {currentLesson.id}
+              </div>
+              <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 bg-[#111111]/90 backdrop-blur-md p-3 border border-[#F4F0E8]/10 flex items-center justify-between text-xs font-mono">
+                <span className="text-[#F4F0E8] font-bold uppercase truncate">{currentLesson.title} STUDIO</span>
+                <span className="text-[#E6B83A] shrink-0 ml-2 font-semibold">1-on-1 Mentorship</span>
               </div>
             </div>
           </div>
@@ -468,6 +524,197 @@ export default function App() {
               <span className="text-base font-black tracking-tight uppercase">{lesson.title}</span>
             </button>
           ))}
+        </div>
+      </section>
+
+      {/* ================= DEDICATED PIANO & KEYBOARD SECTION ================= */}
+      <section id="piano" className="py-24 lg:py-36 bg-[#14130F] text-[#F4F0E8] px-6 lg:px-12 border-t border-b border-[#F4F0E8]/10 relative overflow-hidden">
+        
+        {/* Subtle background glow */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#E6B83A]/5 rounded-full filter blur-3xl pointer-events-none -z-0"></div>
+
+        <div className="max-w-7xl mx-auto space-y-16 relative z-10">
+          
+          {/* Section Header */}
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 border-b border-[#F4F0E8]/15 pb-8">
+            <div className="space-y-3">
+              <div className="inline-flex items-center space-x-2 text-xs font-mono font-bold tracking-widest text-[#E6B83A] uppercase">
+                <Sparkles size={14} />
+                <span>// Dedicated Discipline Spotlight</span>
+              </div>
+              <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight uppercase">
+                THE PIANO SANCTUARY
+              </h2>
+            </div>
+            <p className="text-sm sm:text-base font-mono text-[#F4F0E8]/70 max-w-lg leading-relaxed">
+              From foundational finger independence to concert-grade classical interpretation and contemporary chord voicing under personal guidance of <strong className="text-[#E6B83A]">Kuldeep Gaur</strong>.
+            </p>
+          </div>
+
+          {/* Responsive Editorial Visual Grid */}
+          <div className="grid lg:grid-cols-12 gap-8 items-stretch">
+            
+            {/* Main Featured Grand Piano Image (7 cols on desktop, responsive full width on mobile) */}
+            <div className="lg:col-span-7 flex flex-col justify-between">
+              <div className="relative group overflow-hidden border border-[#F4F0E8]/20 shadow-2xl bg-black/50">
+                <img 
+                  src="https://images.unsplash.com/photo-1552422535-c45813c61732?auto=format&fit=crop&w=1400&q=85" 
+                  alt="Concert Grand Piano at GIPA Studio" 
+                  loading="lazy"
+                  className="w-full h-[280px] sm:h-[400px] md:h-[460px] lg:h-[500px] object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none"></div>
+                
+                {/* Responsive Badges */}
+                <div className="absolute top-4 left-4 bg-[#111111]/90 backdrop-blur-md px-3.5 py-1.5 border border-[#F4F0E8]/20 font-mono text-[11px] uppercase tracking-widest text-[#E6B83A] font-bold">
+                  88-Key Acoustic & Digital Rig
+                </div>
+
+                <div className="absolute bottom-6 left-6 right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-3 text-left">
+                  <div>
+                    <span className="text-xs font-mono uppercase tracking-widest text-[#E6B83A] block">
+                      Acoustic Grand Dynamics
+                    </span>
+                    <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#F4F0E8]">
+                      Concert Grand Technique
+                    </h3>
+                  </div>
+                  <span className="text-xs font-mono text-[#F4F0E8]/60 bg-black/60 px-3 py-1 border border-[#F4F0E8]/10 shrink-0 self-start sm:self-auto">
+                    ABRSM London Aligned
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Side Dual Responsive Images & Studio Highlights (5 cols on desktop, responsive stack on mobile) */}
+            <div className="lg:col-span-5 flex flex-col gap-6 justify-between">
+              
+              {/* Image 2: Hands on Keys */}
+              <div className="relative group overflow-hidden border border-[#F4F0E8]/20 shadow-xl bg-black/50">
+                <img 
+                  src="https://images.unsplash.com/photo-1513883049090-d0b7439799bf?auto=format&fit=crop&w=1000&q=85" 
+                  alt="Pianist Hands & Touch Mechanics" 
+                  loading="lazy"
+                  className="w-full h-[180px] sm:h-[220px] object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
+                <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-xs font-mono">
+                  <span className="font-bold text-[#F4F0E8] uppercase tracking-wider">Touch & Articulation</span>
+                  <span className="text-[#E6B83A] text-[10px] uppercase tracking-widest font-bold">01 // Posture</span>
+                </div>
+              </div>
+
+              {/* Image 3: Score & Upright Keys */}
+              <div className="relative group overflow-hidden border border-[#F4F0E8]/20 shadow-xl bg-black/50">
+                <img 
+                  src="https://images.unsplash.com/photo-1571974599782-87624638275e?auto=format&fit=crop&w=1000&q=85" 
+                  alt="Classical Sheet Music & Grand Staff" 
+                  loading="lazy"
+                  className="w-full h-[180px] sm:h-[220px] object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
+                <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-xs font-mono">
+                  <span className="font-bold text-[#F4F0E8] uppercase tracking-wider">Notation & Harmony</span>
+                  <span className="text-[#E6B83A] text-[10px] uppercase tracking-widest font-bold">02 // Sight-Reading</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* Interactive Virtual Piano Keyboard Preview */}
+          <div className="border border-[#F4F0E8]/20 p-6 sm:p-8 bg-[#181612] space-y-6 shadow-xl">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#F4F0E8]/10 pb-4">
+              <div>
+                <span className="text-xs font-mono uppercase tracking-widest text-[#E6B83A] block font-bold">
+                  // Interactive Keyboard Experience
+                </span>
+                <h4 className="text-xl sm:text-2xl font-black uppercase tracking-tight">
+                  Tap To Hear The Tones
+                </h4>
+              </div>
+              <div className="text-xs font-mono text-[#F4F0E8]/60 flex items-center space-x-2">
+                <Volume2 size={16} className="text-[#E6B83A] animate-pulse" />
+                <span>Web Audio Synthesized • Touch & Click Ready</span>
+              </div>
+            </div>
+
+            {/* Responsive Keyboard Keys */}
+            <div className="grid grid-cols-4 sm:grid-cols-8 gap-2 sm:gap-3">
+              {pianoNotes.map((item) => {
+                const isActive = activePianoNote === item.note;
+                return (
+                  <button
+                    key={item.note}
+                    onClick={() => handlePlayPianoNote(item)}
+                    className={`py-6 sm:py-8 px-2 flex flex-col items-center justify-between border transition-all text-center group cursor-pointer ${
+                      isActive 
+                        ? 'bg-[#E6B83A] text-[#111111] border-[#E6B83A] scale-95 shadow-lg' 
+                        : 'bg-[#F4F0E8] text-[#111111] border-[#F4F0E8] hover:bg-[#E6B83A] hover:border-[#E6B83A] shadow-md'
+                    }`}
+                  >
+                    <span className="font-mono text-xs font-bold opacity-60">{item.sub}</span>
+                    <span className="font-black font-sans text-xl sm:text-2xl my-2">{item.key}</span>
+                    <span className="font-mono text-[10px] font-bold tracking-wider">{item.note}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 4 Core Pillars of Piano Training */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                num: "01",
+                title: "TOUCH & DYNAMICS",
+                desc: "Master forearm weight release, curved fingers, legato singing tone, and nuanced pedal usage."
+              },
+              {
+                num: "02",
+                title: "CHORD REHARMONY",
+                desc: "Explore classical voice leading, 7th & 9th chords, modal interchange, and contemporary song accompaniment."
+              },
+              {
+                num: "03",
+                title: "NOTATION & SCALES",
+                desc: "Read treble and bass clefs fluently. Conquer major/minor scales, arpeggios, and rhythmic subdivisions."
+              },
+              {
+                num: "04",
+                title: "ABRSM & REPERTOIRE",
+                desc: "Prepare for international graded exams or learn your favorite classical masterpieces and modern cinematic themes."
+              }
+            ].map((pillar) => (
+              <div key={pillar.num} className="border border-[#F4F0E8]/15 p-6 space-y-4 bg-[#181612] hover:border-[#E6B83A] transition">
+                <span className="text-xs font-mono font-bold text-[#E6B83A] block">// {pillar.num}</span>
+                <h4 className="text-lg font-black uppercase tracking-wider">{pillar.title}</h4>
+                <p className="text-xs sm:text-sm font-mono text-[#F4F0E8]/70 leading-relaxed">{pillar.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA Box */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-8 border-2 border-[#E6B83A] bg-[#1A1813]">
+            <div className="space-y-2 text-center sm:text-left">
+              <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight">
+                Ready To Master The Keys?
+              </h3>
+              <p className="text-xs sm:text-sm font-mono text-[#F4F0E8]/70">
+                Personal 1-on-1 piano masterclasses with Kuldeep Gaur at GIPA Lakhimpur Kheri.
+              </p>
+            </div>
+            <a
+              href="#contact"
+              onClick={() => setFormData(prev => ({ ...prev, interest: 'Piano' }))}
+              className="bg-[#E6B83A] text-[#111111] px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-[#F4F0E8] transition-all flex items-center space-x-2 shrink-0 shadow-xl"
+            >
+              <span>Enroll In Piano Mentorship</span>
+              <ArrowRight size={16} />
+            </a>
+          </div>
+
         </div>
       </section>
 
@@ -837,6 +1084,7 @@ export default function App() {
             </div>
             <div className="flex flex-wrap gap-6 text-xs font-mono uppercase tracking-wider">
               <a href="#lessons" className="hover:text-[#E6B83A] transition">Lessons</a>
+              <a href="#piano" className="hover:text-[#E6B83A] transition">Piano</a>
               <a href="#about" className="hover:text-[#E6B83A] transition">About</a>
               <a href="#journey" className="hover:text-[#E6B83A] transition">Journey</a>
               <a href="#knowledge" className="hover:text-[#E6B83A] transition">Theory</a>
