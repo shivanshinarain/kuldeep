@@ -211,12 +211,13 @@ export default function App() {
     phone: '',
     email: '',
     interest: 'Guitar',
-    level: 'Beginner',
+    level: 'Complete Beginner',
     preferredDays: 'Flexible',
     deliveryMode: 'Offline (Studio in Lakhimpur Kheri)',
     message: ''
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -224,17 +225,21 @@ export default function App() {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
 
     const name = (formData.name || '').trim();
     const phone = (formData.phone || '').trim();
     const interest = formData.interest || 'Guitar';
-    const level = formData.level || 'Beginner';
+    const level = formData.level || 'Complete Beginner';
     const message = (formData.message || '').trim();
 
     // Required-field validation
     if (!name || !phone || !interest) {
       return;
     }
+
+    setIsSubmitting(true);
+    setTimeout(() => setIsSubmitting(false), 2000);
 
     const whatsappMessage = `Hello Kuldeep Gaur,
 
@@ -1033,15 +1038,15 @@ Thank you.`;
                       onChange={handleFormChange}
                       className="w-full bg-[#1A1A1A] border border-[#F4F0E8]/20 p-3 sm:p-3.5 text-[#F4F0E8] font-mono text-base sm:text-sm focus:border-[#E6B83A] outline-none"
                     >
-                      <option value="Guitar (Acoustic / Electric / Fingerstyle)">Guitar (Acoustic / Electric / Fingerstyle)</option>
-                      <option value="Piano & Keyboard">Piano & Keyboard</option>
-                      <option value="Vocals (Classical / Western)">Vocals (Classical / Western)</option>
+                      <option value="Guitar">Guitar (Acoustic / Electric / Fingerstyle)</option>
+                      <option value="Piano">Piano & Keyboard</option>
+                      <option value="Vocals">Vocals (Classical / Western)</option>
                       <option value="Drums & Rhythm">Drums & Rhythm</option>
                       <option value="Tabla">Tabla</option>
                       <option value="Violin">Violin</option>
                       <option value="Harmonium">Harmonium</option>
-                      <option value="Music Theory & Ear Training">Music Theory & Ear Training</option>
-                      <option value="Dance (Kathak / Folk)">Dance (Kathak / Folk)</option>
+                      <option value="Music Theory">Music Theory & Ear Training</option>
+                      <option value="Dance">Dance (Kathak / Folk)</option>
                     </select>
                   </div>
                   <div className="space-y-1.5 sm:space-y-2">
@@ -1101,7 +1106,8 @@ Thank you.`;
 
                 <button 
                   type="submit" 
-                  className="w-full py-4 sm:py-5 bg-[#E6B83A] text-[#111111] font-black uppercase tracking-widest hover:bg-[#F4F0E8] transition shadow-xl text-xs sm:text-sm active:scale-[0.99] touch-manipulation"
+                  disabled={isSubmitting}
+                  className="w-full py-4 sm:py-5 bg-[#E6B83A] text-[#111111] font-black uppercase tracking-widest hover:bg-[#F4F0E8] transition shadow-xl text-xs sm:text-sm active:scale-[0.99] touch-manipulation disabled:opacity-75 disabled:cursor-not-allowed"
                 >
                   SEND ENQUIRY TO KULDEEP GAUR
                 </button>
