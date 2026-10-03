@@ -66,39 +66,39 @@ export default function ExploreMusicSection() {
   };
 
   return (
-    <section id="explore-music" className="py-24 lg:py-36 bg-[#141210] text-[#F4F0E8] px-6 lg:px-12 border-t border-b border-[#F4F0E8]/10 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto space-y-12">
+    <section id="explore-music" className="py-20 lg:py-36 bg-[#141210] text-[#F4F0E8] px-4 sm:px-6 lg:px-12 border-t border-b border-[#F4F0E8]/10 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto space-y-8 sm:space-y-12">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-[#F4F0E8]/15 pb-8 gap-6">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono tracking-widest text-[#E6B83A] uppercase px-2 py-0.5 border border-[#E6B83A]/30">
+        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-[#F4F0E8]/15 pb-6 sm:pb-8 gap-4 sm:gap-6">
+          <div className="space-y-2 sm:space-y-3">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <span className="text-[10px] sm:text-xs font-mono tracking-widest text-[#E6B83A] uppercase px-2 py-0.5 border border-[#E6B83A]/30">
                 06 // SONIC EXPEDITION
               </span>
-              <span className="text-xs font-mono uppercase tracking-widest text-[#F4F0E8]/50">
+              <span className="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-[#F4F0E8]/50">
                 Global Timbral Archive
               </span>
             </div>
-            <h2 className="text-4xl sm:text-6xl font-black tracking-tight uppercase font-serif text-[#F4F0E8]">
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight uppercase font-serif text-[#F4F0E8] break-words">
               EXPLORE <span className="italic font-light text-[#E6B83A]">MUSIC & TIMBRES</span>
             </h2>
-            <p className="text-sm sm:text-base text-[#F4F0E8]/70 max-w-2xl font-sans leading-relaxed">
+            <p className="text-xs sm:text-base text-[#F4F0E8]/70 max-w-2xl font-sans leading-relaxed">
               Travel across the world’s acoustic palette. Hear orchestral and folk instruments, compare acoustic versus electric timbres, and trace the history of modern sound.
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
             {[
-              { id: 'instruments', label: '1. HEAR THE INSTRUMENTS' },
-              { id: 'comparisons', label: '2. TIMBRE COMPARISONS' },
-              { id: 'genres', label: '3. GENRE EXPLORER' },
-              { id: 'history', label: '4. MUSIC HISTORY' },
+              { id: 'instruments', label: '1. INSTRUMENTS' },
+              { id: 'comparisons', label: '2. TIMBRES' },
+              { id: 'genres', label: '3. GENRES' },
+              { id: 'history', label: '4. HISTORY' },
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-3.5 py-2 text-xs font-mono tracking-wider uppercase transition-all duration-200 border ${
+                className={`px-3 sm:px-3.5 py-2 text-[11px] sm:text-xs font-mono tracking-wider uppercase transition-all duration-200 border touch-manipulation ${
                   activeTab === tab.id
                     ? 'bg-[#E6B83A] text-[#111111] font-bold border-[#E6B83A]'
                     : 'bg-[#181818] text-[#F4F0E8]/70 border-[#F4F0E8]/10 hover:border-[#F4F0E8]/30 hover:text-[#F4F0E8]'

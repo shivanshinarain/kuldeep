@@ -264,33 +264,33 @@ export default function RhythmMetronomeLab() {
   }, [studioBpm, grid]);
 
   return (
-    <section id="rhythm-lab" className="py-24 lg:py-36 bg-[#111111] text-[#F4F0E8] px-6 lg:px-12 border-t border-b border-[#F4F0E8]/10 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto space-y-12">
+    <section id="rhythm-lab" className="py-20 lg:py-36 bg-[#111111] text-[#F4F0E8] px-4 sm:px-6 lg:px-12 border-t border-b border-[#F4F0E8]/10 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto space-y-8 sm:space-y-12">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-[#F4F0E8]/15 pb-8 gap-6">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono tracking-widest text-[#E6B83A] uppercase px-2 py-0.5 border border-[#E6B83A]/30">
+        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-[#F4F0E8]/15 pb-6 sm:pb-8 gap-4 sm:gap-6">
+          <div className="space-y-2 sm:space-y-3">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <span className="text-[10px] sm:text-xs font-mono tracking-widest text-[#E6B83A] uppercase px-2 py-0.5 border border-[#E6B83A]/30">
                 03 // TEMPO & GROOVE SANCTUARY
               </span>
-              <span className="text-xs font-mono uppercase tracking-widest text-[#F4F0E8]/50">
+              <span className="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-[#F4F0E8]/50">
                 Precision Timing Engine
               </span>
             </div>
-            <h2 className="text-4xl sm:text-6xl font-black tracking-tighter uppercase font-serif text-[#F4F0E8]">
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight uppercase font-serif text-[#F4F0E8] break-words">
               RHYTHM & <span className="italic font-light text-[#E6B83A]">METRONOME LAB</span>
             </h2>
-            <p className="text-sm sm:text-base text-[#F4F0E8]/70 max-w-2xl font-sans leading-relaxed">
+            <p className="text-xs sm:text-base text-[#F4F0E8]/70 max-w-2xl font-sans leading-relaxed">
               Lock in your internal pulse. Explore digital metronomic precision, rhythmic subdivisions, and an interactive 8-step groove studio.
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
             {[
-              { id: 'metronome', label: '1. DIGITAL METRONOME' },
+              { id: 'metronome', label: '1. METRONOME' },
               { id: 'rhythm', label: '2. SUBDIVISIONS' },
-              { id: 'beatmaker', label: '3. BUILD A BEAT STUDIO' },
+              { id: 'beatmaker', label: '3. BEAT STUDIO' },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -300,7 +300,7 @@ export default function RhythmMetronomeLab() {
                   stopStudio();
                   setActiveTab(tab.id);
                 }}
-                className={`px-4 py-2.5 text-xs font-mono tracking-wider uppercase transition-all duration-200 border ${
+                className={`px-3 sm:px-4 py-2 sm:py-2.5 text-[11px] sm:text-xs font-mono tracking-wider uppercase transition-all duration-200 border touch-manipulation ${
                   activeTab === tab.id
                     ? 'bg-[#E6B83A] text-[#111111] font-bold border-[#E6B83A]'
                     : 'bg-[#181818] text-[#F4F0E8]/70 border-[#F4F0E8]/10 hover:border-[#F4F0E8]/30 hover:text-[#F4F0E8]'
@@ -316,19 +316,19 @@ export default function RhythmMetronomeLab() {
         {/* TAB 1: DIGITAL METRONOME                                       */}
         {/* ============================================================== */}
         {activeTab === 'metronome' && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#181818] border border-[#F4F0E8]/10 p-6 sm:p-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#181818] border border-[#F4F0E8]/10 p-5 sm:p-8 lg:p-12">
             
             {/* Visual Beat Display & Pulses */}
-            <div className="lg:col-span-6 space-y-8 text-center sm:text-left">
+            <div className="lg:col-span-6 space-y-6 sm:space-y-8 text-center sm:text-left">
               <div className="space-y-2">
                 <span className="text-xs font-mono uppercase tracking-widest text-[#E6B83A]">
                   PRECISION TICK
                 </span>
-                <div className="flex items-baseline gap-4 justify-center sm:justify-start">
-                  <span className="text-7xl sm:text-8xl font-black font-serif text-[#F4F0E8]">
+                <div className="flex items-baseline gap-3 sm:gap-4 justify-center sm:justify-start">
+                  <span className="text-5xl sm:text-7xl lg:text-8xl font-black font-serif text-[#F4F0E8]">
                     {bpm}
                   </span>
-                  <span className="text-xl font-mono text-[#E6B83A] font-bold">
+                  <span className="text-lg sm:text-xl font-mono text-[#E6B83A] font-bold">
                     BPM
                   </span>
                   <span className="text-xs font-mono text-[#F4F0E8]/50">
@@ -342,22 +342,22 @@ export default function RhythmMetronomeLab() {
                 <span className="text-[10px] font-mono uppercase tracking-widest text-[#F4F0E8]/40 block">
                   Beat Position (1 is Downbeat Accent)
                 </span>
-                <div className="flex justify-center sm:justify-start gap-3">
+                <div className="flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-3">
                   {Array.from({ length: timeSignature }, (_, i) => {
                     const isCurrent = isPlayingMetronome && currentBeat === i;
                     const isDownbeat = i === 0;
                     return (
                       <div
                         key={i}
-                        className={`w-14 h-14 sm:w-16 sm:h-16 flex flex-col items-center justify-center border font-mono transition-all duration-75 ${
+                        className={`w-12 h-12 sm:w-16 sm:h-16 flex flex-col items-center justify-center border font-mono transition-all duration-75 ${
                           isCurrent
                             ? isDownbeat
-                              ? 'bg-[#9E2F2F] text-[#F4F0E8] scale-110 border-[#F4F0E8] shadow-[0_0_15px_#9E2F2F]'
+                              ? 'bg-[#9E2F2F] text-[#F4F0E8] scale-105 sm:scale-110 border-[#F4F0E8] shadow-[0_0_15px_#9E2F2F]'
                               : 'bg-[#E6B83A] text-[#111111] scale-105 border-[#F4F0E8]'
                             : 'bg-[#111111] text-[#F4F0E8]/50 border-[#F4F0E8]/10'
                         }`}
                       >
-                        <span className="text-lg font-bold">{i + 1}</span>
+                        <span className="text-base sm:text-lg font-bold">{i + 1}</span>
                         <span className="text-[8px] uppercase tracking-wider opacity-60">
                           {isDownbeat ? 'ACCENT' : 'BEAT'}
                         </span>
@@ -645,7 +645,11 @@ export default function RhythmMetronomeLab() {
             </div>
 
             {/* Sequencer Grid */}
-            <div className="overflow-x-auto pb-4">
+            <div className="text-[11px] font-mono text-[#E6B83A] sm:hidden flex items-center justify-center gap-1.5 py-1.5 px-3 bg-[#111111] border border-[#E6B83A]/25 text-center mb-2">
+              <span>← Swipe horizontally to edit 8-step sequencer →</span>
+            </div>
+
+            <div className="overflow-x-auto scroll-touch-momentum pb-4">
               <div className="min-w-[640px] space-y-3 bg-[#111111] p-4 border border-[#F4F0E8]/10">
                 
                 {/* Step Position Bar */}

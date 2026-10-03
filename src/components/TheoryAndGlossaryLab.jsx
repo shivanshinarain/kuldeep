@@ -118,40 +118,40 @@ export default function TheoryAndGlossaryLab() {
   );
 
   return (
-    <section id="music-theory" className="py-24 lg:py-36 bg-[#111111] text-[#F4F0E8] px-6 lg:px-12 border-t border-b border-[#F4F0E8]/10 relative">
-      <div className="max-w-7xl mx-auto space-y-12">
+    <section id="music-theory" className="py-20 lg:py-36 bg-[#111111] text-[#F4F0E8] px-4 sm:px-6 lg:px-12 border-t border-b border-[#F4F0E8]/10 relative">
+      <div className="max-w-7xl mx-auto space-y-8 sm:space-y-12">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-[#F4F0E8]/15 pb-8 gap-6">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono tracking-widest text-[#E6B83A] uppercase px-2 py-0.5 border border-[#E6B83A]/30">
+        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-[#F4F0E8]/15 pb-6 sm:pb-8 gap-4 sm:gap-6">
+          <div className="space-y-2 sm:space-y-3">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <span className="text-[10px] sm:text-xs font-mono tracking-widest text-[#E6B83A] uppercase px-2 py-0.5 border border-[#E6B83A]/30">
                 05 // ARCHITECTURE OF SOUND
               </span>
-              <span className="text-xs font-mono uppercase tracking-widest text-[#F4F0E8]/50">
+              <span className="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-[#F4F0E8]/50">
                 Global Pedagogical Framework
               </span>
             </div>
-            <h2 className="text-4xl sm:text-6xl font-black tracking-tight uppercase font-serif text-[#F4F0E8]">
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight uppercase font-serif text-[#F4F0E8] break-words">
               THEORY & <span className="italic font-light text-[#E6B83A]">HARMONY LAB</span>
             </h2>
-            <p className="text-sm sm:text-base text-[#F4F0E8]/70 max-w-2xl font-sans leading-relaxed">
+            <p className="text-xs sm:text-base text-[#F4F0E8]/70 max-w-2xl font-sans leading-relaxed">
               Explore Western pitch, Indian Swara equivalents, diatonic chord construction, interactive harmonic progression building, and a complete searchable glossary.
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
             {[
               { id: 'notes', label: '1. NOTES & SWARAS' },
-              { id: 'diatonic', label: '2. DIATONIC CHORDS' },
+              { id: 'diatonic', label: '2. DIATONIC' },
               { id: 'progression', label: '3. CHORD BUILDER' },
-              { id: 'theory', label: '4. THEORY PILLARS' },
-              { id: 'glossary', label: '5. MUSIC GLOSSARY' },
+              { id: 'theory', label: '4. PILLARS' },
+              { id: 'glossary', label: '5. GLOSSARY' },
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-3.5 py-2 text-xs font-mono tracking-wider uppercase transition-all duration-200 border ${
+                className={`px-3 sm:px-3.5 py-2 text-[11px] sm:text-xs font-mono tracking-wider uppercase transition-all duration-200 border touch-manipulation ${
                   activeTab === tab.id
                     ? 'bg-[#E6B83A] text-[#111111] font-bold border-[#E6B83A]'
                     : 'bg-[#181818] text-[#F4F0E8]/70 border-[#F4F0E8]/10 hover:border-[#F4F0E8]/30 hover:text-[#F4F0E8]'

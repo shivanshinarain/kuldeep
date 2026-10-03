@@ -9,16 +9,21 @@
 
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
     font-family: var(--font-sans);
     background-color: #F4F0E8;
     color: #111111;
+    overflow-x: hidden;
+    width: 100%;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   code, pre, .font-mono {
@@ -28,8 +33,8 @@
 
 /* Custom subtle scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: #E8E3D8;
@@ -41,13 +46,19 @@
   background: #9E2F2F;
 }
 
-/* Touch responsiveness */
+/* Touch responsiveness & mobile optimization */
 @media (hover: none) {
-  button, a {
+  button, a, input, select, textarea {
     -webkit-tap-highlight-color: transparent;
   }
 }
 
 .touch-manipulation {
   touch-action: manipulation;
+}
+
+/* Momentum scrolling for horizontally scrollable musical modules on mobile */
+.scroll-touch-momentum {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }

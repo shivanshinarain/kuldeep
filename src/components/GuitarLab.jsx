@@ -194,24 +194,24 @@ export default function GuitarLab() {
   };
 
   return (
-    <section id="guitar-lab" className="py-24 lg:py-36 bg-[#111111] text-[#F4F0E8] px-6 lg:px-12 relative overflow-hidden border-t border-b border-[#F4F0E8]/10">
-      <div className="max-w-7xl mx-auto space-y-12">
+    <section id="guitar-lab" className="py-20 lg:py-36 bg-[#111111] text-[#F4F0E8] px-4 sm:px-6 lg:px-12 relative overflow-hidden border-t border-b border-[#F4F0E8]/10">
+      <div className="max-w-7xl mx-auto space-y-8 sm:space-y-12">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-[#F4F0E8]/15 pb-8 gap-6">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono tracking-widest text-[#E6B83A] uppercase px-2 py-0.5 border border-[#E6B83A]/30">
+        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-[#F4F0E8]/15 pb-6 sm:pb-8 gap-4 sm:gap-6">
+          <div className="space-y-2 sm:space-y-3">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <span className="text-[10px] sm:text-xs font-mono tracking-widest text-[#E6B83A] uppercase px-2 py-0.5 border border-[#E6B83A]/30">
                 04 // INTERACTIVE LABORATORY
               </span>
-              <span className="text-xs font-mono uppercase tracking-widest text-[#F4F0E8]/50">
+              <span className="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-[#F4F0E8]/50">
                 Lakhimpur Kheri Studio
               </span>
             </div>
-            <h2 className="text-4xl sm:text-6xl font-black tracking-tighter uppercase font-serif text-[#F4F0E8]">
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight uppercase font-serif text-[#F4F0E8] break-words">
               GUITAR <span className="italic font-light text-[#E6B83A]">LEARNING LAB</span>
             </h2>
-            <p className="text-sm sm:text-base text-[#F4F0E8]/70 max-w-2xl font-sans leading-relaxed">
+            <p className="text-xs sm:text-base text-[#F4F0E8]/70 max-w-2xl font-sans leading-relaxed">
               Explore authentic guitar craftsmanship, interactive fretboard geography, precision pitch tuning, and complete chord & scale anatomy under master guidance.
             </p>
           </div>
@@ -227,18 +227,18 @@ export default function GuitarLab() {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex flex-wrap gap-2 border-b border-[#F4F0E8]/10 pb-4">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 border-b border-[#F4F0E8]/10 pb-4">
           {[
-            { id: 'fretboard', label: '1. INTERACTIVE FRETBOARD' },
-            { id: 'tuner', label: '2. GUITAR TUNER' },
+            { id: 'fretboard', label: '1. FRETBOARD' },
+            { id: 'tuner', label: '2. TUNER' },
             { id: 'chords', label: '3. CHORD LIBRARY' },
-            { id: 'scales', label: '4. SCALE EXPLORER' },
+            { id: 'scales', label: '4. SCALES' },
             { id: 'types', label: '5. GUITAR TYPES' },
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2.5 text-xs font-mono tracking-wider uppercase transition-all duration-200 border ${
+              className={`px-3 sm:px-4 py-2 sm:py-2.5 text-[11px] sm:text-xs font-mono tracking-wider uppercase transition-all duration-200 border touch-manipulation ${
                 activeTab === tab.id
                   ? 'bg-[#E6B83A] text-[#111111] font-bold border-[#E6B83A]'
                   : 'bg-[#181818] text-[#F4F0E8]/70 border-[#F4F0E8]/10 hover:border-[#F4F0E8]/30 hover:text-[#F4F0E8]'
@@ -296,7 +296,11 @@ export default function GuitarLab() {
             </div>
 
             {/* Fretboard Graphic */}
-            <div className="relative overflow-x-auto pb-4 pt-2">
+            <div className="text-[11px] font-mono text-[#E6B83A] sm:hidden flex items-center justify-center gap-1.5 py-1.5 px-3 bg-[#181818] border border-[#E6B83A]/25 text-center">
+              <span>← Swipe horizontally to explore strings & frets 0 to 12 →</span>
+            </div>
+
+            <div className="relative overflow-x-auto scroll-touch-momentum pb-4 pt-2">
               <div className="min-w-[760px] bg-[#1a1715] border-2 border-[#3d2f25] p-4 rounded-none shadow-2xl relative">
                 
                 {/* Fret Number Markers Top */}
@@ -573,7 +577,7 @@ export default function GuitarLab() {
                 <div className="text-[11px] font-mono uppercase tracking-widest text-[#F4F0E8]/50 pb-2 border-b border-[#F4F0E8]/10">
                   AVAILABLE CHORDS ({filteredChords.length})
                 </div>
-                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                   {filteredChords.map((chordKey) => {
                     const c = GUITAR_CHORDS[chordKey];
                     const isSelected = selectedChordKey === chordKey;

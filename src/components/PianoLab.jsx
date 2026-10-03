@@ -122,29 +122,29 @@ export default function PianoLab() {
   const whiteKeys = PIANO_KEYS.filter((k) => !k.isBlack);
 
   return (
-    <section id="piano" className="py-24 lg:py-36 bg-[#14130F] text-[#F4F0E8] px-6 lg:px-12 border-t border-b border-[#F4F0E8]/10 relative overflow-hidden">
+    <section id="piano" className="py-20 lg:py-36 bg-[#14130F] text-[#F4F0E8] px-4 sm:px-6 lg:px-12 border-t border-b border-[#F4F0E8]/10 relative overflow-hidden">
       
       {/* Subtle atmospheric glow */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#E6B83A]/5 rounded-full filter blur-3xl pointer-events-none -z-0" />
 
-      <div className="max-w-7xl mx-auto space-y-14 relative z-10">
+      <div className="max-w-7xl mx-auto space-y-10 sm:space-y-14 relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 border-b border-[#F4F0E8]/15 pb-8">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono tracking-widest text-[#E6B83A] uppercase px-2 py-0.5 border border-[#E6B83A]/30">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-4 sm:gap-6 border-b border-[#F4F0E8]/15 pb-6 sm:pb-8">
+          <div className="space-y-2 sm:space-y-3">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <span className="text-[10px] sm:text-xs font-mono tracking-widest text-[#E6B83A] uppercase px-2 py-0.5 border border-[#E6B83A]/30">
                 02 // DISCIPLINE SANCTUARY
               </span>
-              <span className="text-xs font-mono uppercase tracking-widest text-[#F4F0E8]/50">
+              <span className="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-[#F4F0E8]/50">
                 88-Key Acoustic & Digital Keys
               </span>
             </div>
-            <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight uppercase font-serif">
+            <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black tracking-tight uppercase font-serif break-words">
               THE PIANO <span className="italic font-light text-[#E6B83A]">SANCTUARY</span>
             </h2>
           </div>
-          <p className="text-sm sm:text-base font-mono text-[#F4F0E8]/70 max-w-lg leading-relaxed">
+          <p className="text-xs sm:text-base font-mono text-[#F4F0E8]/70 max-w-lg leading-relaxed">
             From foundational finger independence to concert-grade classical interpretation and contemporary chord voicing under personal guidance of <strong className="text-[#E6B83A]">Kuldeep Gaur</strong>.
           </p>
         </div>
@@ -342,7 +342,11 @@ export default function PianoLab() {
           {/* ========================================================== */}
           {/* REALISTIC 2-OCTAVE VIRTUAL KEYBOARD                        */}
           {/* ========================================================== */}
-          <div className="relative overflow-x-auto pb-4 pt-2">
+          <div className="text-[11px] font-mono text-[#E6B83A] sm:hidden flex items-center justify-center gap-1.5 py-1.5 px-3 bg-[#111111] border border-[#E6B83A]/25 text-center">
+            <span>← Swipe horizontally to explore full 2 octaves (C3 to C5) →</span>
+          </div>
+
+          <div className="relative overflow-x-auto scroll-touch-momentum pb-4 pt-2">
             <div className="min-w-[700px] h-64 bg-[#0a0a0a] p-3 border-4 border-[#222222] shadow-2xl relative select-none">
               
               {/* White Keys Container (Flex row) */}

@@ -166,35 +166,35 @@ export default function EarTrainingLab() {
   };
 
   return (
-    <section id="ear-training" className="py-24 lg:py-36 bg-[#181818] text-[#F4F0E8] px-6 lg:px-12 border-t border-b border-[#F4F0E8]/10 relative">
-      <div className="max-w-6xl mx-auto space-y-12">
+    <section id="ear-training" className="py-20 lg:py-36 bg-[#181818] text-[#F4F0E8] px-4 sm:px-6 lg:px-12 border-t border-b border-[#F4F0E8]/10 relative">
+      <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-[#F4F0E8]/15 pb-8 gap-6">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono tracking-widest text-[#E6B83A] uppercase px-2 py-0.5 border border-[#E6B83A]/30">
+        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-[#F4F0E8]/15 pb-6 sm:pb-8 gap-4 sm:gap-6">
+          <div className="space-y-2 sm:space-y-3">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <span className="text-[10px] sm:text-xs font-mono tracking-widest text-[#E6B83A] uppercase px-2 py-0.5 border border-[#E6B83A]/30">
                 10 // EAR TRAINING & AUDITORY GYM
               </span>
-              <span className="text-xs font-mono uppercase tracking-widest text-[#F4F0E8]/50">
+              <span className="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-[#F4F0E8]/50">
                 Aural Skills Development
               </span>
             </div>
-            <h2 className="text-4xl sm:text-6xl font-black tracking-tight uppercase font-serif text-[#F4F0E8]">
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight uppercase font-serif text-[#F4F0E8] break-words">
               EAR <span className="italic font-light text-[#E6B83A]">TRAINING LAB</span>
             </h2>
-            <p className="text-sm sm:text-base text-[#F4F0E8]/70 max-w-xl font-sans leading-relaxed">
+            <p className="text-xs sm:text-base text-[#F4F0E8]/70 max-w-xl font-sans leading-relaxed">
               Music is first heard, then felt, then played. Train your ear to recognize pitch, detect intervals, and distinguish harmonic colorations.
             </p>
           </div>
 
           {/* Score Counter */}
-          <div className="flex items-center gap-4 bg-[#111111] p-4 border border-[#F4F0E8]/10">
+          <div className="flex items-center gap-3 sm:gap-4 bg-[#111111] p-3 sm:p-4 border border-[#F4F0E8]/10 self-start sm:self-auto">
             <div>
-              <span className="text-[10px] font-mono uppercase tracking-widest text-[#F4F0E8]/50 block">
+              <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-[#F4F0E8]/50 block">
                 SESSION SCORE
               </span>
-              <div className="text-2xl font-mono font-bold text-[#E6B83A]">
+              <div className="text-xl sm:text-2xl font-mono font-bold text-[#E6B83A]">
                 {score} / {attempts}
                 <span className="text-xs font-normal text-[#F4F0E8]/40 ml-2">
                   ({attempts > 0 ? Math.round((score / attempts) * 100) : 0}%)
@@ -203,7 +203,7 @@ export default function EarTrainingLab() {
             </div>
             <button
               onClick={resetGame}
-              className="p-2 text-[#F4F0E8]/60 hover:text-[#F4F0E8] hover:border-[#E6B83A] border border-transparent transition-colors"
+              className="p-2 text-[#F4F0E8]/60 hover:text-[#F4F0E8] hover:border-[#E6B83A] border border-transparent transition-colors touch-manipulation"
               title="Reset Score"
             >
               <RotateCcw size={16} />
@@ -212,11 +212,11 @@ export default function EarTrainingLab() {
         </div>
 
         {/* Game Mode Navigation */}
-        <div className="flex flex-wrap gap-2 border-b border-[#F4F0E8]/10 pb-4">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 border-b border-[#F4F0E8]/10 pb-4">
           {[
-            { id: 'note', label: '1. IDENTIFY THE NOTE' },
-            { id: 'higher_lower', label: '2. HIGHER OR LOWER?' },
-            { id: 'chord_type', label: '3. MAJOR VS MINOR CHORD' },
+            { id: 'note', label: '1. IDENTIFY NOTE' },
+            { id: 'higher_lower', label: '2. HIGHER / LOWER' },
+            { id: 'chord_type', label: '3. CHORD QUALITY' },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -227,7 +227,7 @@ export default function EarTrainingLab() {
                 else if (tab.id === 'higher_lower') startNewHigherLowerRound();
                 else if (tab.id === 'chord_type') startNewChordRound();
               }}
-              className={`px-4 py-2.5 text-xs font-mono tracking-wider uppercase transition-all duration-200 border ${
+              className={`px-3 sm:px-4 py-2 sm:py-2.5 text-[11px] sm:text-xs font-mono tracking-wider uppercase transition-all duration-200 border touch-manipulation ${
                 activeGame === tab.id
                   ? 'bg-[#E6B83A] text-[#111111] font-bold border-[#E6B83A]'
                   : 'bg-[#111111] text-[#F4F0E8]/70 border-[#F4F0E8]/10 hover:border-[#F4F0E8]/30 hover:text-[#F4F0E8]'
